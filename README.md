@@ -1,2 +1,2 @@
 # DevMotors
-Este repositório foi cri
+Este repositório foi criado para o projeto do laboratorio
