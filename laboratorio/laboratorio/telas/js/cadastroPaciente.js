@@ -11,7 +11,7 @@ document.getElementById('telefone').addEventListener('input', function (e) {
 function exameoptions() {
     let examesolicitado = document.getElementById('examesolicitado').value;
     let exameDiv = document.getElementById('exame');
-    let exameTexto = document.getElementById('exameTexto'); // Campo oculto onde vamos salvar o texto do exame
+    let exameTexto = document.getElementById('exameTexto');
 
     exameDiv.innerHTML = "";
 
@@ -82,7 +82,7 @@ function exameoptions() {
     // Adiciona um evento para capturar o texto da opção selecionada
     document.getElementById('exameSelect').addEventListener('change', function() {
         let selectedOption = this.options[this.selectedIndex];
-        exameTexto.value = selectedOption.text; // Atualiza o campo oculto com o texto selecionado
+        exameTexto.value = selectedOption.text;
     });
 }
 
