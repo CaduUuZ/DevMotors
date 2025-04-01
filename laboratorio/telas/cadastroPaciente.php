@@ -9,6 +9,7 @@
 </head>
 
 <body>
+<?php include 'sidebar.php'; ?> 
     <div class="container">
         <div class="form-header">
             <h1>Cadastro de Paciente</h1>
