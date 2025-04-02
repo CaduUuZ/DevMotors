@@ -203,6 +203,7 @@
     </style>
 </head>
 <body>
+    <?php include 'sidebar.php'; ?> 
     <!-- Controls Container -->
     <div class="container controls-container">
         <div class="form-row">
