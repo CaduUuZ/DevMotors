@@ -1,6 +1,6 @@
 <?php
 
-// Inclui as classes necessárias
+// Inclui as classes 
 require_once '../classes/Paciente.php';
 require_once '../classes/Exame.php';
 
@@ -14,10 +14,8 @@ function calcularIdade($dataNascimento) {
     $hoje = new DateTime();
     return $hoje->diff($nascimento)->y;
 }
-
-// Processa o formulário apenas quando for enviado via POST
+// Pegando os dados do formulário
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Captura dados do formulário
     $idPaciente = $_POST['registro'];
     $dataCadastro = $_POST['dataCadastro'];
     $nomeCompleto = $_POST['nome-completo'];
