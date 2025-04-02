@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Solicitar Exame</title>
     <link rel="stylesheet" href="css/solicitarExame.css">
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -13,19 +13,18 @@
         <div class="form-header">
             <h1>Solicitar Exame</h1>
         </div>
-        <?php include 'sidebar.php'; ?>
-        
+        <?php include 'sidebar.php'; ?> 
         <form id="exameForm" action="#" method="post">
             <div class="form-row">
                 <div class="form-control">
-                    <label for="procurarPaciente">Procurar Paciente <i class="fa-solid fa-magnifying-glass"></i></label>
+                    <label for="procurarPaciente">Procurar Paciente  <i class="fa-solid fa-magnifying-glass"></i></label>
                     <input type="search" name="procurarPaciente" id="procurarPaciente">
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-control">
-                    <label for="lab">Laboratório</label>
-                    <select id="lab" name="lab" required>
+                    <label for="examesolicitado">Exames Solicitados</label>
+                    <select id="examesolicitado" name="examesolicitado" required onchange="exameoptions()">
                         <option value="">Selecione um Exame</option>
                         <option value="microbiologia">Microbiologia</option>
                         <option value="parasitologia">Parasitologia</option>
@@ -36,9 +35,11 @@
                 </div>
             </div>
             <div class="form-row">
-                <div class="form-control" id="exame">
+                <div class="form-control" id="exame"></div>
+            </div>
 
-                </div>
+            <div class="form-row">
+                <div class="form-control" id="exame"></div>
             </div>
             
             <div class="form-row">
@@ -47,12 +48,15 @@
                 </div>
             </div>
             <input type="hidden" id="exameTexto" name="exameTexto">
-            
+
+
             <div class="buttons">
                 <button type="submit" class="btn-primary">Cadastrar Paciente</button>
             </div>
         </form>
     </div>
-    <script src="js/solicitarExame.js"></script>
+    <script src="./js/solicitarExame.js"></script>
 </body>
+
 </html>
+
