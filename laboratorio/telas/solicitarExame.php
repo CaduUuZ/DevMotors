@@ -23,9 +23,9 @@
             </div>
             <div class="form-row">
                 <div class="form-control">
-                    <label for="examesolicitado">Exames Solicitados</label>
-                    <select id="examesolicitado" name="examesolicitado" required onchange="exameoptions()">
-                        <option value="">Selecione um Exame</option>
+                    <label for="laboratorio">Laboratórios</label>
+                    <select id="laboratorio" name="laboratorio" required onchange="exameoptions()">
+                        <option value="">Selecione um Laboratório</option>
                         <option value="microbiologia">Microbiologia</option>
                         <option value="parasitologia">Parasitologia</option>
                         <option value="hematologia">Hematologia</option>
@@ -35,11 +35,11 @@
                 </div>
             </div>
             <div class="form-row">
-                <div class="form-control" id="exame"></div>
+                <div class="form-control" id="lab"></div>
             </div>
 
             <div class="form-row">
-                <div class="form-control" id="exame"></div>
+                <div class="form-control" id="lab"></div>
             </div>
             
             <div class="form-row">

@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $telefone = $_POST['telefone'];
     $email = $_POST['email'];
     $nomeMae = $_POST['nome-mae'];
-    $lab = $_POST['lab'];
+    $laboratorio = $_POST['laboratorio'];
     $exameTexto = $_POST['exameTexto'];
     
     // Calcula a idade do paciente
@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $exame = new Exame(
         $paciente, 
-        $lab, 
+        $laboratorio, 
         $nomeMedicamento, 
         $nomePatologia, 
         $exameTexto
