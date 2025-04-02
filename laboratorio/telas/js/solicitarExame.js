@@ -3,7 +3,7 @@ function exameoptions() {
     let labDiv = document.getElementById('exame');
     let exameTexto = document.getElementById('exameTexto');
 
-    exameDiv.innerHTML = "";
+    labDiv.innerHTML = "";
 
     if (lab === "microbiologia") {
         labDiv.innerHTML = `

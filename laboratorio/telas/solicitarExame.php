@@ -38,15 +38,6 @@
                 <div class="form-control" id="exame"></div>
             </div>
 
-            <div class="form-row">
-                <div class="form-control" id="exame"></div>
-            </div>
-            
-            <div class="form-row">
-                <div class="form-control">
-                    
-                </div>
-            </div>
             <input type="hidden" id="exameTexto" name="exameTexto">
 
 
