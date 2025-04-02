@@ -2,15 +2,16 @@ function exameoptions() {
     let lab = document.getElementById('lab').value;
     let exameDiv = document.getElementById('exame');
     let exameTexto = document.getElementById('exameTexto');
-    
+
+
     exameDiv.innerHTML = "";
-    
-    if (lab === "") {
+
+    if (!lab) {
         return;
     }
-    
-    if (lab === "microbiologia") {
-        exameDiv.innerHTML = `
+
+    let exames = {
+        microbiologia: `
             <label for="exameSelect">Escolha o exame:</label>
             <select id="exameSelect" name="exame" required>
                 <option value="">Selecione...</option>
@@ -18,27 +19,24 @@ function exameoptions() {
                 <option value="micro2">Swab ocular</option>
                 <option value="micro3">Escarro para exame de Micobacterium tuberculosis</option>
             </select>
-        `;
-    } else if (lab === "parasitologia") {
-        exameDiv.innerHTML = `
+        `,
+        parasitologia: `
             <label for="exameSelect">Escolha o exame:</label>
             <select id="exameSelect" name="exame" required>
                 <option value="">Selecione...</option>
                 <option value="para1">Exame parasitológico de fezes</option>
                 <option value="para2">Sangue oculto</option>
             </select>
-        `;
-    } else if (lab === "hematologia") {
-        exameDiv.innerHTML = `
+        `,
+        hematologia: `
             <label for="exameSelect">Escolha o exame:</label>
             <select id="exameSelect" name="exame" required>
                 <option value="">Selecione...</option>
                 <option value="hemato1">Hemograma completo</option>
                 <option value="hemato2">Outros exames de hematologia</option>
             </select>
-        `;
-    } else if (lab === "bioquímica") {
-        exameDiv.innerHTML = `
+        `,
+        bioquímica: `
             <label for="exameSelect">Escolha o exame:</label>
             <select id="exameSelect" name="exame" required>
                 <option value="">Selecione...</option>
@@ -62,35 +60,38 @@ function exameoptions() {
                 <option value="bio18">Triglicerídeos</option>
                 <option value="bio19">Uréia</option>
             </select>
-        `;
-    } else if (lab === "urinálise") {
-        exameDiv.innerHTML = `
+        `,
+        urinálise: `
             <label for="exameSelect">Escolha o exame:</label>
             <select id="exameSelect" name="exame" required>
                 <option value="">Selecione...</option>
                 <option value="urina">Urina 1</option>
             </select>
-        `;
-    }
-    
-    let exameSelect = document.getElementById('exameSelect');
-    if (exameSelect) {
-        exameSelect.addEventListener('change', function() {
-            let selectedOption = this.options[this.selectedIndex];
-            exameTexto.value = selectedOption.text;
-        });
-    }
+        `
+    };
+
+    exameDiv.innerHTML = exames[lab] || "";
+
+    setTimeout(() => {
+        let exameSelect = document.getElementById('exameSelect');
+        if (exameSelect) {
+            exameSelect.addEventListener('change', function () {
+                let selectedOption = this.options[this.selectedIndex];
+                exameTexto.value = selectedOption.text;
+            });
+        }
+    }, 100);
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const labSelect = document.getElementById('lab');
     if (labSelect) {
         labSelect.addEventListener('change', exameoptions);
     }
-    
+
     const form = document.getElementById('exameForm');
     if (form) {
-        form.addEventListener('submit', function(event) {
+        form.addEventListener('submit', function (event) {
             console.log('Formulário enviado!');
         });
     }
