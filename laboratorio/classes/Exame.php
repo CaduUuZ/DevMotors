@@ -1,7 +1,6 @@
 <?php 
 
 require_once 'Paciente.php';
-require_once '../processamento/pacienteDados';
 
 class Exame{
     //private $idExame;
