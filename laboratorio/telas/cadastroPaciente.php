@@ -9,33 +9,16 @@
 </head>
 
 <body>
-<?php include 'sidebar.php'; ?> 
     <div class="container">
         <div class="form-header">
             <h1>Cadastro de Paciente</h1>
         </div>
-
-        <form id="pacienteForm" action="dados.php" method="post">
+        <?php include 'sidebar.php'; ?> 
+        <form id="pacienteForm" action="../processamento/pacienteDados.php" method="post">
             <div class="form-row">
                 <div class="form-control">
-                    <label for="registro">Registro</label>
-                    <input type="text" id="registro" name="registro" required>
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-control">
-                    <label for="data">Data</label>
-                    <input type="date" id="data" name="data" required>
-                </div>
-
-                <div class="form-control">
-                    <label for="periodo">Período</label>
-                    <select id="periodo" name="periodo" required>
-                        <option value="">Selecione um período</option>
-                        <option value="matutino">Matutino</option>
-                        <option value="noturno">Noturno</option>
-                    </select>
+                    <label for="dataCadastro">Data</label>
+                    <input type="date" id="dataCadastro" name="dataCadastro" required>
                 </div>
             </div>
 
@@ -65,27 +48,13 @@
                     <label for="email">Email</label>
                     <input type="email" id="email" name="email" required>
                 </div>
-
+            </div>
+            <div class="form-row">
                 <div class="form-control">
                     <label for="nome-mae">Nome da Mãe</label>
                     <input type="text" id="nome-mae" name="nome-mae" required>
                 </div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-control">
-                    <label for="examesolicitado">Exames Solicitados</label>
-                    <select id="examesolicitado" name="examesolicitado" required onchange="exameoptions()">
-                        <option value="">Selecione um Exame</option>
-                        <option value="microbiologia">Microbiologia</option>
-                        <option value="parasitologia">Parasitologia</option>
-                        <option value="hematologia">Hematologia</option>
-                        <option value="bioquímica">Bioquímica</option>
-                        <option value="urinálise">Urinálise</option>
-                    </select>
-                </div>
-            </div>
-        
+            </div>        
             <div class="form-row">
                 <div class="form-control" id="exame"></div>
             </div>

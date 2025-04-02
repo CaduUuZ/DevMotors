@@ -2,13 +2,13 @@
 
 // Inclui a classe Paciente
 require_once '../classes/Paciente.php';
+require_once '../classes/Exame.php';
 
 // Verifica se o formulário foi enviado
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Captura os dados do formulário HTML
-    $registro = $_POST['registro'];
-    $data = $_POST['data'];
-    $periodo = $_POST['periodo'];
+    $idPaciente = $_POST['registro'];
+    $dataCadastro = $_POST['dataCadastro'];
     $nomeCompleto = $_POST['nome-completo'];
     $dataNascimento = $_POST['dataNascimento'];
     $telefone = $_POST['telefone'];
@@ -34,18 +34,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     // Cria um novo objeto da classe Paciente
-    $paciente = new Paciente($registro, $data, $periodo, $nomeCompleto, $dataNascimento, $telefone, $email, $nomeMae, $exameSolicitado, $nomeMedicamento, $nomePatologia);
+    $paciente = new Paciente($idPaciente, $dataCadastro,$nomeCompleto, $telefone, $email, $nomeMae, $dataNascimento );
 
-    // Exibe as informações do paciente
-    $informacoes = $paciente->exibirInformacoes();
+    // Cria um novo objeto da classe Exame
+    $exame = new Exame($idExame, $paciente, $exameSolicitado, $medicamento, $patologia);
 
-    echo "<h2>Informações do Paciente</h2>";
-    echo "<ul>";
-    foreach ($informacoes as $key => $value) {
-        echo "<li><strong>$key:</strong> $value</li>";
-    }
-    echo "<li><strong>Exame Selecionado:</strong> $exameTexto</li>";
-    echo "</ul>";
 }
-
 ?>
