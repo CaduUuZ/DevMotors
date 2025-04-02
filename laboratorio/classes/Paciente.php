@@ -7,9 +7,10 @@ class Paciente {
     public $telefone;
     public $email;
     public $nomeMae;
+    public $idadePaciente;
 
 
-    public function __construct($idPaciente, $dataCadastro, $nomeCompleto, $dataNascimento, $telefone, $email, $nomeMae) {
+    public function __construct($idPaciente, $dataCadastro, $nomeCompleto, $dataNascimento, $telefone, $email, $nomeMae, $idadePaciente) {
         $this->idPaciente = $idPaciente;
         $this->dataCadastro = $dataCadastro;
         $this->nomeCompleto = $nomeCompleto;
@@ -17,6 +18,7 @@ class Paciente {
         $this->telefone = $telefone;
         $this->email = $email;
         $this->nomeMae = $nomeMae;
+        $this->idadePaciente = $idadePaciente;
     }
 }
 ?>
