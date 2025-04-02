@@ -1,5 +1,4 @@
 <?php
-//teste
 // Inclui as classes 
 require_once '../classes/Paciente.php';
 require_once '../classes/Exame.php';

@@ -52,7 +52,7 @@
             <div class="form-row">
                 <div class="form-control">
                     <label for="nome-mae">Nome da Mãe</label>
-                    <input type="text" id="nome-mae" name="nome-mae" required>
+                    <input type="text" id="nome-mae" name="nome-mae">
                 </div>
             </div>        
             <div class="form-row">
