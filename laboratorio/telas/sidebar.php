@@ -12,9 +12,9 @@
     <div class="sidebar">
         <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
         <ul>
-            <li><a href="index.php"><i class="fa-solid fa-house"></i> Home</a></li>
+            <li><a href="home.php"><i class="fa-solid fa-house"></i> Home</a></li>
             <li><a href="cadastroPaciente.php"><i class="fa-solid fa-pen-to-square"></i> Cadastro de Pacientes</a></li>
-            <li><a href="#"><i class="fa-solid fa-list"></i> Lista de Pacientes</a></li>
+            <li><a href="listaPaciente.php"><i class="fa-solid fa-list"></i> Lista de Pacientes</a></li>
             <li><a href="solicitarExame.php"><i class="fa-solid fa-file-pen"></i> Solicitar Exame</a></li>
             <li class="dropdown">
                 <a href="#" class="dropbtn"><i class="fa-solid fa-file"></i>  Laudos   <i class="fa-solid fa-caret-down"></i></a>

@@ -23,8 +23,8 @@
             </div>
             <div class="form-row">
                 <div class="form-control">
-                    <label for="examesolicitado">Exames Solicitados</label>
-                    <select id="examesolicitado" name="examesolicitado" required onchange="exameoptions()">
+                    <label for="lab">Exames Solicitados</label>
+                    <select id="lab" name="lab" required onchange="exameoptions()">
                         <option value="">Selecione um Exame</option>
                         <option value="microbiologia">Microbiologia</option>
                         <option value="parasitologia">Parasitologia</option>

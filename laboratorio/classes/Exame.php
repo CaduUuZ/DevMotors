@@ -6,15 +6,15 @@ require_once '../processamento/pacienteDados';
 class Exame{
     //private $idExame;
     public $paciente;
-    public $exameSolicitado;
+    public $lab;
     public $medicamento;
     public $patologia;
     public $exameTexto;
 
-    public function __construct(/*$idExame,*/ Paciente $paciente, $exameSolicitado, $medicamento, $patologia, $exameTexto) {
+    public function __construct(/*$idExame,*/ Paciente $paciente, $lab, $medicamento, $patologia, $exameTexto) {
         //$this->idExame = $idExame;
         $this->paciente = $paciente;
-        $this->exameSolicitado = $exameSolicitado;
+        $this->lab = $lab;
         $this->medicamento = $medicamento;
         $this->patologia = $patologia;
         $this->exameTexto = $exameTexto;

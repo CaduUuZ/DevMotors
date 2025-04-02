@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $telefone = $_POST['telefone'];
     $email = $_POST['email'];
     $nomeMae = $_POST['nome-mae'];
-    $exameSolicitado = $_POST['examesolicitado'];
+    $lab = $_POST['lab'];
     $exameTexto = $_POST['exameTexto'];
     $medicamento = $_POST['remedio'];
     $patologia = $_POST['patologia'];
@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $paciente = new Paciente($idPaciente, $dataCadastro,$nomeCompleto, $telefone, $email, $nomeMae, $dataNascimento );
 
     // Cria um novo objeto da classe Exame
-    $exame = new Exame($idExame, $paciente, $exameSolicitado, $medicamento, $patologia);
+    $exame = new Exame($paciente, $lab, $nomeMedicamento, $nomePatologia, $exameTexto);
 
 }
 ?>
