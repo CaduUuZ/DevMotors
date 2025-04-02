@@ -1,12 +1,12 @@
 function exameoptions() {
-    let examesolicitado = document.getElementById('examesolicitado').value;
-    let exameDiv = document.getElementById('exame');
+    let lab = document.getElementById('lab').value;
+    let labDiv = document.getElementById('exame');
     let exameTexto = document.getElementById('exameTexto');
 
     exameDiv.innerHTML = "";
 
-    if (examesolicitado === "microbiologia") {
-        exameDiv.innerHTML = `
+    if (lab === "microbiologia") {
+        labDiv.innerHTML = `
             <label for="exame">Escolha o exame:</label>
             <select id="exameSelect" name="exame" required>
                 <option value="">Selecione...</option>
@@ -15,8 +15,8 @@ function exameoptions() {
                 <option value="micro3">Escarro para exame de Micobacterium tuberculosis</option>
             </select>
         `;
-    } else if (examesolicitado === "parasitologia") {
-        exameDiv.innerHTML = `
+    } else if (lab === "parasitologia") {
+        labDiv.innerHTML = `
             <label for="exame">Escolha o exame:</label>
             <select id="exameSelect" name="exame" required>
                 <option value="">Selecione...</option>
@@ -24,8 +24,8 @@ function exameoptions() {
                 <option value="para2">Sangue oculto</option>
             </select>
         `;
-    } else if (examesolicitado === "hematologia") {
-        exameDiv.innerHTML = `
+    } else if (lab === "hematologia") {
+        labDiv.innerHTML = `
             <label for="exame">Escolha o exame:</label>
             <select id="exameSelect" name="exame" required>
                 <option value="">Selecione...</option>
@@ -33,8 +33,8 @@ function exameoptions() {
                 <option value="hemato2">Outros exames de hematologia</option>
             </select>
         `;
-    } else if (examesolicitado === "bioquímica") {
-        exameDiv.innerHTML = `
+    } else if (lab === "bioquímica") {
+        labDiv.innerHTML = `
             <label for="exame">Escolha o exame:</label>
             <select id="exameSelect" name="exame" required>
                 <option value="">Selecione...</option>
@@ -59,8 +59,8 @@ function exameoptions() {
                 <option value="bio19">Uréia</option>
             </select>
         `;
-    } else if (examesolicitado === "urinálise") {
-        exameDiv.innerHTML = `
+    } else if (lab === "urinálise") {
+        labDiv.innerHTML = `
             <label for="exame">Escolha o exame:</label>
             <select id="exameSelect" name="exame" required>
                 <option value="">Selecione...</option>
