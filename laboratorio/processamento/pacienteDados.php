@@ -22,11 +22,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $telefone = $_POST['telefone'];
     $email = $_POST['email'];
     $nomeMae = $_POST['nome-mae'];
+    // Calcula a idade do paciente
+    $idadePaciente = calcularIdade($dataNascimento);
+    $nomeMedicamento = $_POST['remedio-nome'];
+    $nomePatologia = $_POST['patologia_nome'];
     $laboratorio = $_POST['laboratorio'];
     $exameTexto = $_POST['exameTexto'];
     
-    // Calcula a idade do paciente
-    $idadePaciente = calcularIdade($dataNascimento);
+
     
     // Verifica se o paciente tem medicamento
     $nomeMedicamento = ($_POST['remedio'] == 'medicamento-sim') 
@@ -40,21 +43,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Cria objetos de paciente e exame
     $paciente = new Paciente(
-        $idPaciente, 
-        $dataCadastro, 
-        $nomeCompleto, 
-        $telefone, 
-        $email, 
-        $nomeMae, 
-        $dataNascimento, 
-        $idadePaciente
+        $idPaciente,
+        $dataCadastro,
+        $nomeCompleto,
+        $dataNascimento,
+        $telefone,
+        $email,
+        $nomeMae,
+        $idadePaciente,
+        $nomeMedicamento,
+        $nomePatologia
     );
 
     $exame = new Exame(
         $paciente, 
         $laboratorio, 
-        $nomeMedicamento, 
-        $nomePatologia, 
         $exameTexto
     );
     
