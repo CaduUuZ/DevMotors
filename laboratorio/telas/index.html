@@ -4,22 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Laboratório</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="./css/login.css">
 </head>
 <body>
     <div class="login-container">
         <h2>Login</h2>
-        <form>
+        <form action="home.php" method="POST">
             <div class="input-group">
                 <label for="email">E-mail</label>
-                <input type="email" id="email" required>
+                <input type="email" id="email" name="email" required>
             </div>
             <div class="input-group">
                 <label for="password">Senha</label>
-                <input type="password" id="password" required>
+                <input type="password" id="password" name="password" required>
             </div>
             <div class="remember-me">
-                <input type="checkbox" id="remember">
+                <input type="checkbox" id="remember" name="remember">
                 <label for="remember">Lembrar de mim</label>
             </div>
             <button class="login-button" type="submit">Entrar</button>
