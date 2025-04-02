@@ -2,9 +2,9 @@ function exameoptions() {
     let lab = document.getElementById('lab').value;
     let labDiv = document.getElementById('exame');
     let exameTexto = document.getElementById('exameTexto');
-
+    
     labDiv.innerHTML = "";
-
+    
     if (lab === "microbiologia") {
         labDiv.innerHTML = `
             <label for="exame">Escolha o exame:</label>
@@ -68,10 +68,24 @@ function exameoptions() {
             </select>
         `;
     }
-
+    
     // Adiciona um evento para capturar o texto da opção selecionada
-    document.getElementById('exameSelect').addEventListener('change', function() {
-        let selectedOption = this.options[this.selectedIndex];
-        exameTexto.value = selectedOption.text;
-    });
+    setTimeout(function() {
+        const exameSelect = document.getElementById('exameSelect');
+        if (exameSelect) {
+            exameSelect.addEventListener('change', function() {
+                let selectedOption = this.options[this.selectedIndex];
+                exameTexto.value = selectedOption.text;
+            });
+        }
+    }, 100);
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Verifica se o select existe
+    const labSelect = document.getElementById('lab');
+    if (labSelect) {
+        // Adiciona o listener de eventos
+        labSelect.addEventListener('change', exameoptions);
+    }
+});

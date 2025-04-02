@@ -46,7 +46,7 @@
             </div>
         </form>
     </div>
-    <script src="./js/solicitarExame.js"></script>
+    <script src="js/solicitarExame.js"></script>
 </body>
 
 </html>
