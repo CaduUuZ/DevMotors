@@ -245,18 +245,75 @@
                         </span>
                     </button>
                 </li>
-                <li><h3>Paciente 004 - Ana Pereira</h3> <button class="lixo">🗑️</button></li>
-                <li><h3>Paciente 005 - Roberto Almeida</h3> <button class="lixo">🗑️</button></li>
-                <li><h3>Paciente 006 - Juliana Costa</h3> <button class="lixo">🗑️</button></li>
-                <li><h3>Paciente 007 - Fernando Gomes</h3> <button class="lixo">🗑️</button></li>
-                <li><h3>Paciente 008 - Patricia Lima</h3> <button class="lixo">🗑️</button></li>
-                <li><h3>Paciente 009 - Marcelo Souza</h3> <button class="lixo">🗑️</button></li>
-                <li><h3>Paciente 010 - Luciana Ferreira</h3> <button class="lixo">🗑️</button></li>
-                <li><h3>Paciente 011 - Gabriel Martins</h3> <button class="lixo">🗑️</button></li>
-                <li><h3>Paciente 012 - Camila Rodrigues</h3> <button class="lixo">🗑️</button></li>
-                <li><h3>Paciente 013 - Rafael Teixeira</h3> <button class="lixo">🗑️</button></li>
-                <li><h3>Paciente 014 - Bianca Carvalho</h3> <button class="lixo">🗑️</button></li>
-                <li><h3>Paciente 015 - Eduardo Mendes</h3> <button class="lixo">🗑️</button></li>
+                <li><h3>Paciente 004 - Ana Pereira</h3><button class="lixo">
+                        <span class="material-symbols-outlined">
+                        delete
+                        </span>
+                    </button></li>
+                <li><h3>Paciente 005 - Roberto Almeida</h3><button class="lixo">
+                        <span class="material-symbols-outlined">
+                        delete
+                        </span>
+                    </button></li>
+                <li><h3>Paciente 006 - Juliana Costa</h3><button class="lixo">
+                        <span class="material-symbols-outlined">
+                        delete
+                        </span>
+                    </button></li>
+                <li><h3>Paciente 007 - Fernando Gomes</h3>
+                    <button class="lixo">
+                        <span class="material-symbols-outlined">
+                        delete
+                        </span>
+                    </button></li>
+                <li><h3>Paciente 008 - Patricia Lima</h3>
+                    <button class="lixo">
+                        <span class="material-symbols-outlined">
+                        delete
+                        </span>
+                    </button></li>
+                <li><h3>Paciente 009 - Marcelo Souza</h3>
+                    <button class="lixo">
+                        <span class="material-symbols-outlined">
+                        delete
+                        </span>
+                    </button></li>
+                <li><h3>Paciente 010 - Luciana Ferreira</h3>
+                    <button class="lixo">
+                        <span class="material-symbols-outlined">
+                        delete
+                        </span>
+                    </button></li>
+                <li><h3>Paciente 011 - Gabriel Martins</h3>
+                    <button class="lixo">
+                        <span class="material-symbols-outlined">
+                        delete
+                        </span>
+                    </button></li>
+                <li><h3>Paciente 012 - Camila Rodrigues</h3>
+                    <button class="lixo">
+                        <span class="material-symbols-outlined">
+                        delete
+                        </span>
+                    </button></li>
+                <li><h3>Paciente 013 - Rafael Teixeira</h3>
+                    <button class="lixo">
+                        <span class="material-symbols-outlined">
+                        delete
+                        </span>
+                    </button></li>
+                <li><h3>Paciente 014 - Bianca Carvalho</h3>
+                    <button class="lixo">
+                        <span class="material-symbols-outlined">
+                        delete
+                        </span>
+                    </button></li>
+                <li><h3>Paciente 015 - Eduardo Mendes</h3>
+                    <button class="lixo">
+                        <span class="material-symbols-outlined">
+                        delete
+                        </span>
+                    </button></li>
             </ul>
         </div>
     </div>
