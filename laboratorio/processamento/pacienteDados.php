@@ -12,11 +12,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $telefone = $_POST['telefone'];
     $email = $_POST['email'];
     $nomeMae = $_POST['nome-mae'];
+    // Calcula a idade do paciente
     $idadePaciente = calcularIdade($dataNascimento);
-    $nomeMedicamento = $_POST['remedio-nome'];
-    $nomePatologia = $_POST['patologia_nome'];
-    $laboratorio = $_POST['laboratorio'];
-    $exameTexto = $_POST['exameTexto'];
+    //$nomeMedicamento = $_POST['remedio-nome'];
+    //$nomePatologia = $_POST['patologia_nome'];
+    //$laboratorio = $_POST['laboratorio'];
+   // $exameTexto = $_POST['exameTexto'];
 
     // Verifica se o paciente tem medicamento
     $nomeMedicamento = ($_POST['remedio'] == 'medicamento-sim') 
@@ -41,14 +42,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $nomeMedicamento,
         $nomePatologia
     );
-
+/*
     $exame = new Exame(
         $paciente, 
         $laboratorio, 
         $exameTexto
     );
+*/
 }
-
 /**
  * Calcula a idade com base na data de nascimento
  * @param string $dataNascimento Data no formato aceito pelo DateTime
@@ -69,9 +70,12 @@ function gerar_id_aleatorio($tamanho = 8) {
     $idPaciente = '';
     
     for ($i = 0; $i < $tamanho; $i++) {
-        $idPaciente .= $caracteres[random_int(0, strlen($caracteres) - 1)];
+        $idPaciente .= (random_int(0, 1) === 0)
+            ? $caracteres[random_int(0, 9)]
+            : $caracteres[random_int(10, strlen($caracteres) - 1)];
     }
     
     return $idPaciente;
 }
+
 ?>
