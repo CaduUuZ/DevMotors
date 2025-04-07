@@ -204,7 +204,7 @@
 </head>
 <body>
     <?php include 'sidebar.php'; ?> 
-    <!-- Controls Container -->
+
     <div class="container controls-container">
         <div class="form-row">
             <div class="buttons">
@@ -219,7 +219,7 @@
     </div>
 
 
-    <!-- Patient List Container -->
+
     <div class="container" id="Lista">
         <div class="form-group">
             <h2>Lista de Pacientes</h2>
