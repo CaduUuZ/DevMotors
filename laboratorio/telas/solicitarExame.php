@@ -51,7 +51,7 @@
 
 
             <div class="buttons">
-                <button type="submit" class="btn-primary">Cadastrar Paciente</button>
+                <button type="submit" class="btn-primary">Cadastrar Exame</button>
             </div>
         </form>
     </div>
