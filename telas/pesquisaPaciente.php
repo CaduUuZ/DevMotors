@@ -9,7 +9,7 @@
 </head>
 <body>
     <?php include 'sidebar.php'; ?> 
-    <!-- Controls Container -->
+    
     <div class="container controls-container">
         <div class="form-row">
             <div class="buttons">
@@ -24,7 +24,7 @@
     </div>
 
 
-    <!-- Patient List Container -->
+    
     <div class="container" id="Lista">
         <div class="form-group">
             <h2>Lista de Pacientes</h2>
@@ -32,91 +32,91 @@
                 <li><h3>Paciente 001 - João da Silva</h3>
                     <button class="lixo">
                         <span class="material-symbols-outlined">
-                        delete
+                        🗑
                         </span>
                     </button>
                 </li>
                 <li><h3>Paciente 002 - Maria Oliveira</h3>
                     <button class="lixo">
                         <span class="material-symbols-outlined">
-                        delete
+                        🗑
                         </span>
                     </button>
             </li>
                 <li><h3>Paciente 003 - Carlos Santos</h3>
                     <button class="lixo">
                         <span class="material-symbols-outlined">
-                        delete
+                        🗑
                         </span>
                     </button>
                 </li>
                 <li><h3>Paciente 004 - Ana Pereira</h3><button class="lixo">
                         <span class="material-symbols-outlined">
-                        delete
+                        🗑
                         </span>
                     </button></li>
                 <li><h3>Paciente 005 - Roberto Almeida</h3><button class="lixo">
                         <span class="material-symbols-outlined">
-                        delete
+                        🗑
                         </span>
                     </button></li>
                 <li><h3>Paciente 006 - Juliana Costa</h3><button class="lixo">
                         <span class="material-symbols-outlined">
-                        delete
+                        🗑
                         </span>
                     </button></li>
                 <li><h3>Paciente 007 - Fernando Gomes</h3>
                     <button class="lixo">
                         <span class="material-symbols-outlined">
-                        delete
+                        🗑
                         </span>
                     </button></li>
                 <li><h3>Paciente 008 - Patricia Lima</h3>
                     <button class="lixo">
                         <span class="material-symbols-outlined">
-                        delete
+                        🗑
                         </span>
                     </button></li>
                 <li><h3>Paciente 009 - Marcelo Souza</h3>
                     <button class="lixo">
                         <span class="material-symbols-outlined">
-                        delete
+                        🗑
                         </span>
                     </button></li>
                 <li><h3>Paciente 010 - Luciana Ferreira</h3>
                     <button class="lixo">
                         <span class="material-symbols-outlined">
-                        delete
+                        🗑
                         </span>
                     </button></li>
                 <li><h3>Paciente 011 - Gabriel Martins</h3>
                     <button class="lixo">
                         <span class="material-symbols-outlined">
-                        delete
+                        🗑
                         </span>
                     </button></li>
                 <li><h3>Paciente 012 - Camila Rodrigues</h3>
                     <button class="lixo">
                         <span class="material-symbols-outlined">
-                        delete
+                        🗑
                         </span>
                     </button></li>
                 <li><h3>Paciente 013 - Rafael Teixeira</h3>
                     <button class="lixo">
                         <span class="material-symbols-outlined">
-                        delete
+                        🗑
                         </span>
                     </button></li>
                 <li><h3>Paciente 014 - Bianca Carvalho</h3>
                     <button class="lixo">
                         <span class="material-symbols-outlined">
-                        delete
+                        🗑
                         </span>
                     </button></li>
                 <li><h3>Paciente 015 - Eduardo Mendes</h3>
                     <button class="lixo">
                         <span class="material-symbols-outlined">
-                        delete
+                        🗑
                         </span>
                     </button></li>
             </ul>
