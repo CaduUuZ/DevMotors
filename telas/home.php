@@ -4,10 +4,10 @@ require_once '../config/db.php';
 $dataHoje = date("Y-m-d");
 
 // Contagem de pacientes cadastrados hoje
-$pacientesHoje = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM pacientes WHERE DATE(data_cadastro) = '$dataHoje'"))['total'];
+$pacientesHoje = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM pacientes WHERE DATE(dataCadastro) = '$dataHoje'"))['total'];
 
 // Contagem de exames solicitados hoje
-$examesHoje = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM exames WHERE DATE(data_solicitacao) = '$dataHoje'"))['total'];
+$examesHoje = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM exames WHERE DATE(dataExame) = '$dataHoje'"))['total'];
 
 // Contagem de laudos feitos hoje
 $laudosHoje = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM laudos WHERE DATE(data_laudo) = '$dataHoje'"))['total'];
