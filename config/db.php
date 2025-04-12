@@ -39,7 +39,7 @@ CREATE TABLE exames (
     exameTexto TEXT NOT NULL,
     dataExame TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (idPaciente) REFERENCES pacientes(idPaciente),
-    ALTER TABLE exames ADD resultado TEXT
+    resultado TEXT
 ); 
 
 */
