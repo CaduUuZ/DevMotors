@@ -38,7 +38,8 @@ CREATE TABLE exames (
     laboratorio VARCHAR(100) NOT NULL,
     exameTexto TEXT NOT NULL,
     dataExame TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (idPaciente) REFERENCES pacientes(idPaciente)
+    FOREIGN KEY (idPaciente) REFERENCES pacientes(idPaciente),
+    ALTER TABLE exames ADD resultado TEXT
 ); 
 
 */
