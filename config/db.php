@@ -42,5 +42,13 @@ CREATE TABLE exames (
     resultado TEXT
 ); 
 
+ALTER TABLE exames
+DROP FOREIGN KEY exames_ibfk_1;
+
+ALTER TABLE exames
+ADD CONSTRAINT exames_ibfk_1
+FOREIGN KEY (idPaciente) REFERENCES pacientes(idPaciente)
+ON DELETE CASCADE;
+
 */
 

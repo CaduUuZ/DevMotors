@@ -36,51 +36,62 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $dataNascimento = $_POST['dataNascimento'];
         $telefone = $_POST['telefone'];
         $email = $_POST['email'];
-        $nomeMae = $_POST['nome-mae'];
-        $idadePaciente = calcularIdade($dataNascimento);
+        $nomeMae = $_POST['nome-mae'] ?? null;
 
-        $nomeMedicamento = ($_POST['remedio'] === 'medicamento-sim') ? $_POST['nome_medicamento'] : null;
-        $nomePatologia = ($_POST['patologia'] === 'patologia-sim') ? $_POST['patologia_nome'] : null;
+        // Calcular a idade com base na data de nascimento
+        $idade = calcularIdade($dataNascimento);
 
-        // Cria objeto paciente
-        $paciente = new Paciente(
-            $idPaciente,
-            $nomeCompleto,
-            $dataNascimento,
-            $telefone,
-            $email,
-            $nomeMae,
-            $idadePaciente,
-            $nomeMedicamento,
-            $nomePatologia
-        );
+        // Inserir os dados no banco de dados
+        $query = "INSERT INTO pacientes (idPaciente, nomeCompleto, dataNascimento, idade, telefone, email, nomeMae) 
+                  VALUES ('$idPaciente', '$nomeCompleto', '$dataNascimento', '$idade', '$telefone', '$email', '$nomeMae')";
 
-        // Salva no banco
-        $paciente->salvar($conn);
-        echo "
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <meta charset='UTF-8'>
-            <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
-        </head>
-        <body>
-            <script>
-                Swal.fire({
-                    title: 'Sucesso!',
-                    text: 'Paciente cadastrado com sucesso!',
-                    icon: 'success',
-                    confirmButtonText: 'OK'
-                }).then(() => {
-                    window.location.href = '../telas/home.php';
-                });
-            </script>
-        </body>
-        </html>
-        ";
-
-
-
+        if (mysqli_query($conn, $query)) {
+            echo "
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset='UTF-8'>
+                <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
+            </head>
+            <body>
+                <script>
+                    Swal.fire({
+                        title: 'Sucesso!',
+                        text: 'Paciente cadastrado com sucesso!',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    }).then(() => {
+                        window.location.href = '../telas/home.php';
+                    });
+                </script>
+            </body>
+            </html>
+            ";
+        } else {
+            $mensagemErro = json_encode(mysqli_error($conn));
+        
+            echo "
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset='UTF-8'>
+                <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
+            </head>
+            <body>
+                <script>
+                    Swal.fire({
+                        title: 'Erro!',
+                        text: $mensagemErro,
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    }).then(() => {
+                        window.history.back();
+                    });
+                </script>
+            </body>
+            </html>
+            ";
+        }
     } catch (Exception $e) {
         $mensagemErro = json_encode($e->getMessage());
     
