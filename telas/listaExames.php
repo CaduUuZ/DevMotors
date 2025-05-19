@@ -1,20 +1,22 @@
-<?php require_once('../config/db.php'); include_once('sidebar.php'); 
+<?php
+require_once('../config/db.php');
+include_once('sidebar.php');
 
 // Verifica se há um ID de paciente para buscar
-$buscaId = isset($_GET['buscaId']) ? trim($_GET['buscaId']) : null; 
+$buscaId = isset($_GET['buscaId']) ? trim($_GET['buscaId']) : null;
 
 // Consulta SQL
 $sql = "SELECT e.idExame, e.exameTexto, e.dataExame, e.resultado, 
                p.idPaciente, p.nomeCompleto, p.idade 
         FROM exames e 
-        JOIN pacientes p ON e.idPaciente = p.idPaciente"; 
+        JOIN pacientes p ON e.idPaciente = p.idPaciente";
 
-if (!empty($buscaId)) { 
-    $buscaId = $conn->real_escape_string($buscaId); 
-    $sql .= " WHERE p.idPaciente LIKE '%$buscaId%'"; 
-} 
+if (!empty($buscaId)) {
+    $buscaId = $conn->real_escape_string($buscaId);
+    $sql .= " WHERE p.idPaciente LIKE '%$buscaId%'";
+}
 
-$sql .= " ORDER BY e.dataExame DESC"; 
+$sql .= " ORDER BY e.dataExame DESC";
 
 $result = $conn->query($sql);
 ?>
@@ -26,6 +28,7 @@ $result = $conn->query($sql);
   <title>Lista de Exames</title>
   <link rel="stylesheet" href="css/listaExames.css?v=6">
   <script src="https://kit.fontawesome.com/b2dffd92bb.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
   <div class="container">
@@ -44,7 +47,13 @@ $result = $conn->query($sql);
         <?php endif; ?>
       </form>
     </div>
-    
+
+    <?php if (isset($_GET['success'])): ?>
+      <div class="<?= $_GET['success'] == 1 ? 'success' : 'error' ?>">
+        <?= $_GET['success'] == 1 ? 'Exame excluído com sucesso!' : htmlspecialchars($_GET['error']) ?>
+      </div>
+    <?php endif; ?>
+
     <div class="table-wrapper">
       <table>
         <thead>
@@ -76,7 +85,9 @@ $result = $conn->query($sql);
                     <?php else: ?>
                       <a class="btn-primary small-btn" href="form_resultado.php?idExame=<?= $row['idExame'] ?>">Inserir</a>
                     <?php endif; ?>
-                    <a class="btn-danger small-btn" href="excluir_exame.php?idExame=<?= $row['idExame'] ?>" onclick="return confirm('Tem certeza que deseja excluir este exame?');"><i class="fa-solid fa-trash"></i></a>
+                    <button type="button" class="btn-danger small-btn btn-excluir" data-id="<?= $row['idExame'] ?>">
+                      <i class="fa-solid fa-trash"></i>
+                    </button>
                   </div>
                 </td>
               </tr>
@@ -90,5 +101,33 @@ $result = $conn->query($sql);
       </table>
     </div>
   </div>
+
+  <!-- Confirmação com SweetAlert2 -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const botoesExcluir = document.querySelectorAll('.btn-excluir');
+
+      botoesExcluir.forEach(botao => {
+        botao.addEventListener('click', function () {
+          const idExame = this.getAttribute('data-id');
+
+          Swal.fire({
+            title: 'Tem certeza?',
+            text: "Você não poderá reverter isso!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Sim, excluir!',
+            cancelButtonText: 'Cancelar'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.href = `../processamento/excluir_exame.php?idExame=${idExame}`;
+            }
+          });
+        });
+      });
+    });
+  </script>
 </body>
 </html>

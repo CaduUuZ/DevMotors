@@ -19,6 +19,14 @@ if ($conn->connect_error) {
 CREATE DATABASE IF NOT EXISTS lab_faculdade;
 USE lab_faculdade;
 
+CREATE TABLE usuarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    senha VARCHAR(100) NOT NULL,
+    nivel VARCHAR(20) NOT NULL DEFAULT 'user'
+);
+
+
 CREATE TABLE pacientes (
     idPaciente VARCHAR(8) PRIMARY KEY,
     dataCadastro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

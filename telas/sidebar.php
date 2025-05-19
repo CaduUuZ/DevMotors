@@ -27,7 +27,7 @@
                     <li><a href="#">Urinálise</a></li>
                 </ul>
             </li>
-            <li><a href="login.html" class="logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
+            <li><a href="index.html" class="logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
         </ul>
     </div>
 
