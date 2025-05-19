@@ -1,66 +1,97 @@
 <?php
 require_once('../config/db.php');
 
-if (!isset($_GET['id'])) {
-    echo "<script>
-        alert('ID do paciente não informado.');
-        window.history.back();
-    </script>";
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Verifica se o idPaciente foi enviado
+    if (isset($_POST['idPaciente']) && !empty($_POST['idPaciente'])) {
+        // Sanitiza e captura os dados
+        $idPaciente = $_POST['idPaciente'];
+        $nomeCompleto = trim($_POST['nomeCompleto']);
+        $idade = isset($_POST['idade']) && is_numeric($_POST['idade']) ? (int)$_POST['idade'] : null;
+        $email = filter_var(trim($_POST['email']), FILTER_VALIDATE_EMAIL) ? trim($_POST['email']) : null;
+        $telefone = trim($_POST['telefone']);
+        $patologia = !empty(trim($_POST['patologia'])) ? trim($_POST['patologia']) : null;
+        $medicamento = !empty(trim($_POST['medicamento'])) ? trim($_POST['medicamento']) : null;
+
+        // Verifica se o nome foi enviado
+        if (empty($nomeCompleto)) {
+            header("Location: ../telas/pesquisaPaciente.php?edit_success=0&error=" . urlencode("Nome Completo é obrigatório"));
+            exit;
+        }
+
+        // Montar a query dinamicamente
+        $query = "UPDATE pacientes SET nomeCompleto = ?";
+        $types = "s";
+        $params = [$nomeCompleto];
+
+        if ($idade !== null) {
+            $query .= ", idade = ?";
+            $types .= "i";
+            $params[] = $idade;
+        } else {
+            $query .= ", idade = NULL";
+        }
+
+        if ($email !== null) {
+            $query .= ", email = ?";
+            $types .= "s";
+            $params[] = $email;
+        } else {
+            $query .= ", email = NULL";
+        }
+
+        if ($telefone !== '') {
+            $query .= ", telefone = ?";
+            $types .= "s";
+            $params[] = $telefone;
+        } else {
+            $query .= ", telefone = NULL";
+        }
+
+        if ($patologia !== null) {
+            $query .= ", patologia = ?";
+            $types .= "s";
+            $params[] = $patologia;
+        } else {
+            $query .= ", patologia = NULL";
+        }
+
+        if ($medicamento !== null) {
+            $query .= ", medicamento = ?";
+            $types .= "s";
+            $params[] = $medicamento;
+        } else {
+            $query .= ", medicamento = NULL";
+        }
+
+        $query .= " WHERE idPaciente = ?";
+        $types .= "i"; // supondo que idPaciente seja int, se for string mude para "s"
+        $params[] = $idPaciente;
+
+        // Preparar e executar
+        $stmt = $conn->prepare($query);
+        if (!$stmt) {
+            header("Location: ../telas/pesquisaPaciente.php?edit_success=0&error=" . urlencode("Erro no banco de dados: " . $conn->error));
+            exit;
+        }
+
+        $stmt->bind_param($types, ...$params);
+
+        if ($stmt->execute()) {
+            header("Location: ../telas/pesquisaPaciente.php?edit_success=1");
+            exit;
+        } else {
+            header("Location: ../telas/pesquisaPaciente.php?edit_success=0&error=" . urlencode("Erro ao atualizar paciente"));
+            exit;
+        }
+    } else {
+        // idPaciente não enviado ou vazio
+        header("Location: ../telas/pesquisaPaciente.php?edit_success=0&error=" . urlencode("ID do paciente não foi encontrado"));
+        exit;
+    }
+} else {
+    // Método inválido, não POST
+    header("Location: ../telas/pesquisaPaciente.php");
     exit;
 }
-
-$idPaciente = $conn->real_escape_string($_GET['id']);
-
-// Obter os dados do paciente
-$sql = "SELECT * FROM pacientes WHERE idPaciente = '$idPaciente'";
-$result = $conn->query($sql);
-
-if ($result->num_rows === 0) {
-    echo "<script>
-        alert('Paciente não encontrado.');
-        window.history.back();
-    </script>";
-    exit;
-}
-
-$paciente = $result->fetch_assoc();
 ?>
-
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <title>Editar Paciente</title>
-    <link rel="stylesheet" href="css/cadastroPaciente.css">
-</head>
-<body>
-    <div class="container">
-        <div class="form-header">
-            <h1>Editar Paciente</h1>
-        </div>
-        <form action="../processamento/editarPacienteDados.php" method="POST">
-            <input type="hidden" name="idPaciente" value="<?= $paciente['idPaciente'] ?>">
-            <div class="form-group">
-                <label for="nome-completo">Nome Completo:</label>
-                <input type="text" id="nome-completo" name="nome-completo" value="<?= htmlspecialchars($paciente['nomeCompleto']) ?>" required>
-            </div>
-            <div class="form-group">
-                <label for="dataNascimento">Data de Nascimento:</label>
-                <input type="date" id="dataNascimento" name="dataNascimento" value="<?= $paciente['dataNascimento'] ?>" required>
-            </div>
-            <div class="form-group">
-                <label for="telefone">Telefone:</label>
-                <input type="text" id="telefone" name="telefone" value="<?= htmlspecialchars($paciente['telefone']) ?>">
-            </div>
-            <div class="form-group">
-                <label for="email">E-mail:</label>
-                <input type="email" id="email" name="email" value="<?= htmlspecialchars($paciente['email']) ?>">
-            </div>
-            <div class="buttons">
-                <button type="submit" class="btn-primary">Salvar</button>
-                <a href="pesquisaPaciente.php" class="btn-secondary">Cancelar</a>
-            </div>
-        </form>
-    </div>
-</body>
-</html>
