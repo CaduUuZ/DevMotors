@@ -1,8 +1,8 @@
 <?php
-require_once('../config/db.php');
+require_once('../config/db.php'); // Inclui a configuração do banco de dados
 
-if (isset($_GET['id'])) {
-    $idPaciente = $conn->real_escape_string($_GET['id']);
+if (isset($_GET['id'])) { // Verifica se o ID do paciente foi fornecido
+    $idPaciente = $conn->real_escape_string($_GET['id']); // Sanitiza o ID recebido
 
     // Excluir os exames relacionados ao paciente
     $sqlExames = "DELETE FROM exames WHERE idPaciente = '$idPaciente'";

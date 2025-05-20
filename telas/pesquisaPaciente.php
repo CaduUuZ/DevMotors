@@ -1,10 +1,11 @@
 <?php
-require_once('../config/db.php');
+require_once('../config/db.php'); // Inclui a configuração do banco de dados
 ?>
 
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
+  <!-- Metadados e links para estilos e scripts -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"/>
@@ -14,15 +15,17 @@ require_once('../config/db.php');
   <title>Pacientes</title>
 </head>
 <body>
-<?php include 'sidebar.php'; ?> 
+<?php include 'sidebar.php'; ?> <!-- Inclui o menu lateral -->
 
 <div class="container controls-container">
+  <!-- Botão para adicionar novo paciente e barra de pesquisa -->
   <div class="form-row">
     <div class="buttons">
       <button class="btn-primary" onclick="window.location.href='cadastroPaciente.php'">Novo Paciente</button>
     </div>
     <div class="search-container">
       <form method="GET" action="">
+        <!-- Campo de pesquisa -->
         <input type="text" name="search" placeholder="Digite o nome ou código do paciente:" value="<?= htmlspecialchars($_GET['search'] ?? '') ?>">
         <button id="procura" type="submit">Procurar</button>
       </form>
@@ -31,26 +34,30 @@ require_once('../config/db.php');
 </div>
 
 <div class="container" id="Lista">
+  <!-- Lista de pacientes -->
   <div class="form-group">
     <h2>Lista de Pacientes</h2>
     <ul class="pacientes">
       <?php
+      // Consulta SQL para buscar pacientes
       $search = $_GET['search'] ?? '';
       $sql = "SELECT idPaciente, nomeCompleto, idade, email, telefone FROM pacientes";
       if (!empty($search)) {
-        $search = $conn->real_escape_string($search);
+        $search = $conn->real_escape_string($search); // Sanitiza a entrada
         $sql .= " WHERE idPaciente LIKE '%$search%' OR nomeCompleto LIKE '%$search%'";
       }
       $sql .= " ORDER BY nomeCompleto ASC";
 
       $result = $conn->query($sql);
 
+      // Exibe os pacientes encontrados ou uma mensagem de nenhum resultado
       if ($result && $result->num_rows > 0) {
         while ($paciente = $result->fetch_assoc()) {
           echo '
           <li>
             <h3>' . htmlspecialchars($paciente['idPaciente']) . ' - ' . htmlspecialchars($paciente['nomeCompleto'])  . ' - ' . htmlspecialchars($paciente['email']) . '</h3>
             <div class="actions">
+              <!-- Botão para editar paciente -->
               <button class="editar" 
                 data-id="' . $paciente['idPaciente'] . '" 
                 data-nome="' . htmlspecialchars($paciente['nomeCompleto']) . '"
@@ -59,6 +66,7 @@ require_once('../config/db.php');
                 data-telefone="' . htmlspecialchars($paciente['telefone']) . '">
                 <span class="material-symbols-outlined">edit</span>
               </button>
+              <!-- Botão para excluir paciente -->
               <button class="lixo" onclick="confirmarExclusao(\'' . $paciente['idPaciente'] . '\')">
                 <span class="material-symbols-outlined">delete</span>
               </button>
@@ -66,7 +74,7 @@ require_once('../config/db.php');
           </li>';
         }
       } else {
-        echo '<li><h3>Nenhum paciente encontrado.</h3></li>';
+        echo '<li><h3>Nenhum paciente encontrado.</h3></li>'; // Mensagem caso nenhum paciente seja encontrado
       }
       ?>
     </ul>
@@ -83,6 +91,7 @@ require_once('../config/db.php');
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
         </div>
         <div class="modal-body">
+          <!-- Campos do formulário para edição -->
           <input type="hidden" name="idPaciente" id="modal-idPaciente">
 
           <div class="mb-3">
@@ -115,6 +124,7 @@ require_once('../config/db.php');
 </div>
 
 <script>
+// Função para confirmar exclusão com SweetAlert2
 function confirmarExclusao(idPaciente) {
   Swal.fire({
     title: "Tem certeza?",
@@ -165,12 +175,13 @@ document.querySelectorAll('.editar').forEach(btn => {
   <?php endif; ?>
 <?php endif; ?>
 
-
+// Função para obter parâmetros da URL
 function getQueryParam(param) {
   const urlParams = new URLSearchParams(window.location.search);
   return urlParams.get(param);
 }
 
+// Exibir mensagens de sucesso ou erro ao editar
 const editSuccess = getQueryParam('edit_success');
 const errorMsg = getQueryParam('error');
 
@@ -191,7 +202,6 @@ if (editSuccess !== null) {
     });
   }
 }
-
 </script>
 
 <!-- Bootstrap JS -->

@@ -1,16 +1,17 @@
 <?php
-require_once('../config/db.php');
+require_once('../config/db.php'); // Inclui o arquivo de configuração do banco de dados
 
 /**
  * Função para calcular a idade com base na data de nascimento
  */
 function calcularIdade($dataNascimento) {
-    $nascimento = new DateTime($dataNascimento);
-    $hoje = new DateTime();
-    return $hoje->diff($nascimento)->y;
+    $nascimento = new DateTime($dataNascimento); // Cria um objeto DateTime com a data de nascimento
+    $hoje = new DateTime(); // Obtém a data atual
+    return $hoje->diff($nascimento)->y; // Calcula a diferença em anos
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') { // Verifica se o método da requisição é POST
+    // Escapa os dados recebidos para evitar SQL Injection
     $idPaciente = $conn->real_escape_string($_POST['idPaciente']);
     $nomeCompleto = $conn->real_escape_string($_POST['nome-completo']);
     $dataNascimento = $conn->real_escape_string($_POST['dataNascimento']);
@@ -29,7 +30,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 email = '$email' 
             WHERE idPaciente = '$idPaciente'";
 
-    if ($conn->query($sql)) {
+    if ($conn->query($sql)) { // Verifica se a consulta foi executada com sucesso
+        // Exibe um alerta de sucesso usando SweetAlert2
         echo "
         <!DOCTYPE html>
         <html>
@@ -45,13 +47,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     icon: 'success',
                     confirmButtonText: 'OK'
                 }).then(() => {
-                    window.location.href = '../telas/pesquisaPaciente.php';
+                    window.location.href = '../telas/pesquisaPaciente.php'; // Redireciona para a página de pesquisa
                 });
             </script>
         </body>
         </html>
         ";
     } else {
+        // Exibe um alerta de erro com a mensagem retornada pelo banco de dados
         $mensagemErro = json_encode($conn->error);
         echo "
         <!DOCTYPE html>
@@ -68,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     icon: 'error',
                     confirmButtonText: 'OK'
                 }).then(() => {
-                    window.history.back();
+                    window.history.back(); // Retorna à página anterior
                 });
             </script>
         </body>

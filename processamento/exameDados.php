@@ -1,20 +1,24 @@
 <?php
 
+// Inclui os arquivos necessários para conexão com o banco de dados e classes
 require_once '../config/db.php';
 require_once '../classes/Paciente.php';
 require_once '../classes/Exame.php';
 
+// Verifica se o método da requisição é POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Obtém os dados enviados pelo formulário
     $nomePaciente = $_POST['procurarPaciente'] ?? '';
     $laboratorio = $_POST['laboratorio'] ?? '';
     $exameTexto = $_POST['exameTexto'] ?? '';
 
+    // Verifica se todos os campos obrigatórios foram preenchidos
     if (empty($nomePaciente) || empty($laboratorio) || empty($exameTexto)) {
         echo "<script>alert('Todos os campos são obrigatórios.');</script>";
         exit;
     }
 
-    // Buscar paciente por id
+    // Busca o paciente no banco de dados pelo ID ou nome
     $stmt = $conn->prepare("SELECT * FROM pacientes WHERE idPaciente LIKE ? LIMIT 1");
     $likeNome = "%$nomePaciente%";
     $stmt->bind_param("s", $likeNome);
@@ -22,11 +26,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $result = $stmt->get_result();
     $pacienteData = $result->fetch_assoc();
 
+    // Verifica se o paciente foi encontrado
     if (!$pacienteData) {
         echo "<script>alert('Paciente não encontrado.');</script>";
         exit;
     }
 
+    // Cria uma instância da classe Paciente com os dados obtidos
     $paciente = new Paciente(
         $pacienteData['idPaciente'],
         $pacienteData['nomeCompleto'],
@@ -39,14 +45,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $pacienteData['nomePatologia']
     );
 
-    // Converter texto do exame para string formatada
+    // Converte o texto do exame em uma string formatada
     $exames = array_map('trim', explode(',', $exameTexto));
     $exameTextoFormatado = implode(', ', $exames);
 
-    // Criar e salvar exame
+    // Cria uma instância da classe Exame e salva no banco de dados
     $exame = new Exame($paciente, $laboratorio, $exameTextoFormatado);
     $exame->salvar($conn);
 
+    // Exibe uma mensagem de sucesso usando SweetAlert2 e redireciona para a página inicial
     echo "
     <!DOCTYPE html>
     <html lang='pt-br'>

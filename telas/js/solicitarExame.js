@@ -1,10 +1,18 @@
+// Função para atualizar as opções de exames com base no laboratório selecionado
 function exameoptions() {
+    // Obtém o valor selecionado no campo de laboratório
     let laboratorio = document.getElementById('laboratorio').value;
+
+    // Obtém o elemento onde as opções de exames serão inseridas
     let labDiv = document.getElementById('lab');
+
+    // Obtém o campo de texto onde será exibido o nome do exame selecionado
     let exameTexto = document.getElementById('exameTexto');
 
+    // Limpa o conteúdo atual do elemento de opções de exames
     labDiv.innerHTML = "";
 
+    // Verifica qual laboratório foi selecionado e insere as opções correspondentes
     if (laboratorio === "microbiologia") {
         labDiv.innerHTML = `
             <label for="lab">Escolha o exame:</label>
