@@ -113,7 +113,7 @@ $informacoesSalvas = $infoData['informacoesAdicionais'] ? json_decode($infoData[
                 
                 <div class="buttons">
                     <button type="submit" name="salvar_informacoes" class="btn-success">Salvar Informações</button>
-                    <a href="../telas/ver_laudo.php?id=<?= $idExame ?>&print=1" target="_blank">Imprimir</a>
+                    <a href="../telas/ver_laudo.php?id=<?= $idExame ?>&print=1" target="_blank" class="btn-imprimir">🖨️ Imprimir</a>
                     <button type="button" id="limparCampos" class="btn-secondary">Limpar Campos</button>
                 </div>
             </form>
