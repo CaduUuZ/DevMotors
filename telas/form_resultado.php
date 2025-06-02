@@ -2,6 +2,8 @@
 // Inclui o arquivo de configuração do banco de dados
 require_once('../config/db.php');
 
+require_once '../telas/sidebar.php';
+
 // Verifica se o ID do exame foi informado
 if (!isset($_GET['idExame'])) {
     echo "ID do exame não informado.";

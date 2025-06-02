@@ -1,6 +1,7 @@
 <?php
 
-// Configuração do banco - AJUSTE AQUI SUAS CREDENCIAIS
+
+// Configuração do banco 
 $host = 'localhost';
 $dbname = 'lab_faculdade';
 $username = 'root';
