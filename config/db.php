@@ -15,7 +15,6 @@ if ($conn->connect_error) {
 
 /* BANCO DE DADOS USADO NOS TESTES
 
-
 CREATE DATABASE IF NOT EXISTS lab_faculdade;
 USE lab_faculdade;
 
@@ -23,9 +22,8 @@ CREATE TABLE usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(100) NOT NULL UNIQUE,
     senha VARCHAR(100) NOT NULL,
-    nivel VARCHAR(20) NOT NULL DEFAULT 'user'
+    nivel ENUM('user', 'admin') NOT NULL DEFAULT 'user'
 );
-
 
 CREATE TABLE pacientes (
     idPaciente VARCHAR(8) PRIMARY KEY,
@@ -46,17 +44,11 @@ CREATE TABLE exames (
     laboratorio VARCHAR(100) NOT NULL,
     exameTexto TEXT NOT NULL,
     dataExame TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (idPaciente) REFERENCES pacientes(idPaciente),
-    resultado TEXT
-); 
+    resultado TEXT,
+    informacoesAdicionais TEXT,
+    FOREIGN KEY (idPaciente) REFERENCES pacientes(idPaciente) ON DELETE CASCADE
+);
 
-ALTER TABLE exames
-DROP FOREIGN KEY exames_ibfk_1;
-
-ALTER TABLE exames
-ADD CONSTRAINT exames_ibfk_1
-FOREIGN KEY (idPaciente) REFERENCES pacientes(idPaciente)
-ON DELETE CASCADE;
 
 */
 
