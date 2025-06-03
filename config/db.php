@@ -49,6 +49,12 @@ CREATE TABLE exames (
     FOREIGN KEY (idPaciente) REFERENCES pacientes(idPaciente) ON DELETE CASCADE
 );
 
+INSERT INTO usuarios (email, senha, nivel)
+VALUES ('aluno@lab.com', 'aluno123', 'user');
+
+INSERT INTO usuarios (email, senha, nivel)
+VALUES ('admin@lab.com', 'admin123', 'admin');
+
 
 */
 
