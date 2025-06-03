@@ -16,13 +16,6 @@
 <body>
     <div class="login-container">
         <h2>Login</h2>
-        <?php
-        session_start();
-        if (isset($_SESSION['error'])) {
-            echo "<p class='error-message'>" . $_SESSION['error'] . "</p>";
-            unset($_SESSION['error']); // Limpar a mensagem de erro após exibir
-        }
-        ?>
         <form action="../processamento/login.php" method="POST">
             <div class="input-group">
                 <label for="email">E-mail</label>
