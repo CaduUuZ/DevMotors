@@ -4,6 +4,15 @@ require_once('../config/db.php');
 // Inclui o arquivo da barra lateral
 include_once('sidebar.php');
 
+// Verifica se o usuário está logado e obtém suas informações
+session_start();
+if (!isset($_SESSION['usuarioLogado'])) {
+    header("Location: index.html");
+    exit;
+}
+$usuarioLogado = $_SESSION['usuarioLogado'];
+$cargoUsuario = $usuarioLogado['cargo']; // Obtém o cargo do usuário logado
+
 // Verifica se há um ID de paciente para buscar
 $buscaId = isset($_GET['buscaId']) ? trim($_GET['buscaId']) : null;
 
@@ -73,8 +82,10 @@ $result = $conn->query($sql);
           <tr>
             <th>ID Exame</th>
             <th>ID Paciente</th>
-            <th>Paciente</th>
-            <th>Idade</th>
+            <?php if ($cargoUsuario === 'admin'): ?> <!-- Apenas admins podem ver estas colunas -->
+              <th>Paciente</th>
+              <th>Idade</th>
+            <?php endif; ?>
             <th>Exame</th>
             <th>Data</th>
             <th>Ações</th>
@@ -87,8 +98,10 @@ $result = $conn->query($sql);
               <tr>
                 <td><?= $row['idExame'] ?></td>
                 <td><?= $row['idPaciente'] ?></td>
-                <td><?= $row['nomeCompleto'] ?></td>
-                <td><?= $row['idade'] ?></td>
+                <?php if ($cargoUsuario === 'admin'): ?> <!-- Apenas admins podem ver estas colunas -->
+                  <td><?= $row['nomeCompleto'] ?></td>
+                  <td><?= $row['idade'] ?></td>
+                <?php endif; ?>
                 <td><?= $row['exameTexto'] ?></td>
                 <td><?= date('d/m/Y H:i', strtotime($row['dataExame'])) ?></td>
                 <td class="actions-cell">
@@ -112,7 +125,7 @@ $result = $conn->query($sql);
           <?php else: ?>
             <!-- Exibe uma mensagem caso nenhum exame seja encontrado -->
             <tr>
-              <td colspan="7" class="no-results">Nenhum exame encontrado para o ID informado.</td>
+              <td colspan="<?= $cargoUsuario === 'admin' ? '7' : '5' ?>" class="no-results">Nenhum exame encontrado para o ID informado.</td>
             </tr>
           <?php endif; ?>
         </tbody>

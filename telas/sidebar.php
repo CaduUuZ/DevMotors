@@ -9,6 +9,8 @@
     <script src="https://kit.fontawesome.com/b2dffd92bb.js" crossorigin="anonymous"></script>
     <!-- Importa o arquivo CSS para estilização da barra lateral -->
     <link rel="stylesheet" href="./css/sidebar.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=account_circle" />
+    <?php /*<span class="material-symbols-outlined"> account_circle </span>*/ ?> 
 </head>
 <body>
 
@@ -42,6 +44,8 @@
             </li>
             <!-- Link para logout -->
             <li><a href="index.html" class="logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
+            <!-- Link para a página de perfil do usuário -->
+            <li><a href="perfil.php"><i class="fa-solid fa-user"></i> Perfil </a></li>
         </ul>
     </div>
 
