@@ -18,15 +18,3 @@ document.querySelectorAll('.input-field').forEach(input => {
         }
     });
 });
-
-// Submissão dos formulários
-document.getElementById('loginForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    alert('Login realizado com sucesso!');
-});
-
-document.getElementById('registerForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    alert('Registro realizado com sucesso!');
-    showLogin();
-});
