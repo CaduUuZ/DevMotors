@@ -1,4 +1,4 @@
-package classes;
+package java;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -64,5 +64,15 @@ public class Paciente {
 
             stmt.executeUpdate();
         }
+    }
+
+    public static void listar(Connection conn) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'listar'");
+    }
+
+    public static Paciente buscarPorId(Connection conn, String idPaciente) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'buscarPorId'");
     }
 }

@@ -1,4 +1,4 @@
-package classes;
+package java;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -27,5 +27,10 @@ public class Exame {
         } catch (SQLException e) {
             throw new SQLException("Erro ao salvar exame: " + e.getMessage(), e);
         }
+    }
+
+    public static void listar(Connection conn) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'listar'");
     }
 }
