@@ -1,12 +1,16 @@
-const formContainer = document.getElementById('formContainer');
+const formContainer = document.getElementById('form-container');
+const switchToRegister = document.getElementById('switch-to-register');
+const switchToLogin = document.getElementById('switch-to-login');
 
-function showRegister() {
+// Alternar para o formulário de registro
+switchToRegister.addEventListener('click', () => {
     formContainer.classList.add('show-register');
-}
+});
 
-function showLogin() {
+// Alternar para o formulário de login
+switchToLogin.addEventListener('click', () => {
     formContainer.classList.remove('show-register');
-}
+});
 
 // Efeito de animação nos inputs
 document.querySelectorAll('.input-field').forEach(input => {
@@ -19,14 +23,20 @@ document.querySelectorAll('.input-field').forEach(input => {
     });
 });
 
-// Submissão dos formulários
-document.getElementById('loginForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    alert('Login realizado com sucesso!');
+// Submissão do formulário de login
+document.getElementById('login-form').addEventListener('submit', function(e) {
+    Swal.fire({
+        title: "Login realizado com sucesso!",
+        icon: "success",
+        draggable: true
+    });
 });
 
-document.getElementById('registerForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    alert('Registro realizado com sucesso!');
-    showLogin();
+// Submissão do formulário de registro
+document.getElementById('register-form').addEventListener('submit', function(e) {
+    Swal.fire({
+        title: "Registro realizado com sucesso!",
+        icon: "success",
+        draggable: true
+    });
 });
