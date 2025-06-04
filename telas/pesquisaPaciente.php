@@ -8,7 +8,7 @@ require_once('../config/db.php'); // Inclui a configuração do banco de dados
   <!-- Metadados e links para estilos e scripts -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"/>
+  <script src="https://kit.fontawesome.com/b2dffd92bb.js" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="css/pesquisaPaciente.css"/>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -64,11 +64,11 @@ require_once('../config/db.php'); // Inclui a configuração do banco de dados
                 data-idade="' . htmlspecialchars($paciente['idade']) . '"
                 data-email="' . htmlspecialchars($paciente['email']) . '"
                 data-telefone="' . htmlspecialchars($paciente['telefone']) . '">
-                <span class="material-symbols-outlined">edit</span>
+                <i class="fa-solid fa-pen-to-square"></i>
               </button>
               <!-- Botão para excluir paciente -->
               <button class="lixo" onclick="confirmarExclusao(\'' . $paciente['idPaciente'] . '\')">
-                <span class="material-symbols-outlined">delete</span>
+                <span class=""><i class="fa-solid fa-trash"></i></span>
               </button>
             </div>
           </li>';
@@ -204,7 +204,6 @@ if (editSuccess !== null) {
 }
 </script>
 
-<!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
