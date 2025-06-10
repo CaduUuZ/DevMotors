@@ -268,7 +268,7 @@ const graficoLinha = new Chart(ctxLinha, {
         tension: 0.3,
         fill: true
       }
-      // Removido dataset de laudos que não existe no banco de dados
+      
     ]
   },
   options: opcoes
@@ -295,7 +295,6 @@ const graficoBarras = new Chart(ctxBarras, {
         borderColor: 'rgba(255, 193, 7, 1)',
         borderWidth: 1
       }
-      // Removido dataset de laudos que não existe no banco de dados
     ]
   },
   options: {
