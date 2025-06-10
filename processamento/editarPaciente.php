@@ -10,8 +10,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') { // Verifica se o método da requisi
         $idade = isset($_POST['idade']) && is_numeric($_POST['idade']) ? (int)$_POST['idade'] : null; // Idade do paciente
         $email = filter_var(trim($_POST['email']), FILTER_VALIDATE_EMAIL) ? trim($_POST['email']) : null; // E-mail validado
         $telefone = trim($_POST['telefone']); // Telefone do paciente
-        $patologia = !empty(trim($_POST['patologia'])) ? trim($_POST['patologia']) : null; // Patologia do paciente
-        $medicamento = !empty(trim($_POST['medicamento'])) ? trim($_POST['medicamento']) : null; // Medicamento do paciente
+        $nomePatologia = !empty(trim($_POST['nomePatologia'])) ? trim($_POST['nomePatologia']) : null; // Nome da patologia
+        $nomeMedicamento = !empty(trim($_POST['nomeMedicamento'])) ? trim($_POST['nomeMedicamento']) : null; // Nome do medicamento
+        
 
         // Verifica se o nome foi enviado
         if (empty($nomeCompleto)) {
@@ -50,24 +51,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') { // Verifica se o método da requisi
             $query .= ", telefone = NULL";
         }
 
-        if ($patologia !== null) {
-            $query .= ", patologia = ?";
-            $types .= "s"; // Tipo string
-            $params[] = $patologia;
+        if ($nomePatologia !== null) {
+            $query .= ", nomePatologia = ?";
+            $types .= "s";
+            $params[] = $nomePatologia;
         } else {
-            $query .= ", patologia = NULL";
+            $query .= ", nomePatologia = NULL";
         }
-
-        if ($medicamento !== null) {
-            $query .= ", medicamento = ?";
-            $types .= "s"; // Tipo string
-            $params[] = $medicamento;
+        
+        if ($nomeMedicamento !== null) {
+            $query .= ", nomeMedicamento = ?";
+            $types .= "s";
+            $params[] = $nomeMedicamento;
         } else {
-            $query .= ", medicamento = NULL";
+            $query .= ", nomeMedicamento = NULL";
         }
+        
 
         $query .= " WHERE idPaciente = ?"; // Condição para o ID do paciente
-        $types .= "i"; // Tipo inteiro para idPaciente
+        $types .= "s"; // Tipo inteiro para idPaciente
         $params[] = $idPaciente;
 
         // Preparar e executar
