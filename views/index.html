@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login & Registro</title>
+    <link rel="stylesheet" href="css/login.css?v=1.0">
+</head>
+<body>
+    <div class="container">
+        <div class="form-container" id="form-container">
+            <!-- Formulário de Login -->
+            <div class="form-box" id="login-box">
+                <h2 class="form-title">Entrar</h2>
+                
+                <form id="login-form" action="../controllers/login.php" method="POST">
+                    <div class="input-group">
+                        <input type="email" name="email" class="input-field" id="login-email" placeholder=" " required>
+                        <label class="input-label" for="login-email">Email</label>
+                    </div>
+                    
+                    <div class="input-group">
+                        <input type="password" name="senha" class="input-field" id="login-senha" placeholder=" " required>
+                        <label class="input-label" for="login-senha">Senha</label>
+                    </div>
+                    
+                    <button type="submit" name="login" class="btn" id="login-btn" >Entrar</button>
+                </form>
+                
+                <div class="switch-form">
+                    <p>Não tem uma conta? <span class="switch-link" id="switch-to-register">Registre-se</span></p>
+                </div>
+            </div>
+            
+            <!-- Formulário de Registro -->
+            <div class="form-box" id="register-box">
+                <h2 class="form-title">Registrar</h2>
+                
+                <form id="register-form" action="../controllers/login.php" method="POST">
+                    <div class="input-group">
+                        <input type="email" name="email" class="input-field" id="register-email" placeholder=" " required>
+                        <label class="input-label" for="register-email">Email</label>
+                    </div>
+                    
+                    <div class="input-group">
+                        <input type="password" name="senha" class="input-field" id="register-senha" placeholder=" " required>
+                        <label class="input-label" for="register-senha">Senha</label>
+                    </div>
+                    
+                    <button type="submit" name="register" class="btn" id="register-btn">Registrar</button>
+                </form>
+                
+                <div class="switch-form">
+                    <p>Já tem uma conta? <span class="switch-link" id="switch-to-login">Entre aqui</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="./js/login.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+</html>

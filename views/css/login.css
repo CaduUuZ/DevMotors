@@ -1,0 +1,180 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f5f5f5;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.container {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+.form-container {
+    position: relative;
+    width: 200%;
+    display: flex;
+    transition: transform 0.6s ease-in-out;
+}
+
+.form-container.show-register {
+    transform: translateX(-50%);
+}
+
+.form-box {
+    width: 50%;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.form-box form {
+    width: 100%;
+}
+
+.form-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 30px;
+    text-align: center;
+    position: relative;
+}
+
+.form-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 3px;
+    background: #007bff;
+    border-radius: 2px;
+}
+
+.input-group {
+    position: relative;
+    margin-bottom: 25px;
+}
+
+.input-field {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid #e1e5e9;
+    border-radius: 10px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    background: transparent;
+    outline: none;
+}
+
+.input-field:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.2);
+}
+
+.input-label {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    color: #666;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    pointer-events: none;
+    background: white;
+    padding: 0 5px;
+}
+
+.input-field:focus + .input-label,
+.input-field:not(:placeholder-shown) + .input-label {
+    top: -10px;
+    left: 10px;
+    font-size: 12px;
+    color: #007bff;
+    font-weight: 600;
+}
+
+.btn {
+    width: 100%;
+    padding: 15px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0, 123, 255, 0.3);
+    background: #0056b3;
+}
+
+.switch-form {
+    text-align: center;
+    color: #666;
+    font-size: 14px;
+}
+
+.switch-link {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.switch-link:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+    .form-box {
+        padding: 30px 25px;
+    }
+    
+    .form-title {
+        font-size: 24px;
+    }
+}
