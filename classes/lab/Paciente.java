@@ -1,4 +1,4 @@
-package java;
+package lab;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
