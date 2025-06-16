@@ -6,44 +6,60 @@ require_once '../config/db.php';
 class PacienteDAO
 {
     private $conn;
-    private $apiUrl;
 
-    public function __construct(mysqli $conn, $apiUrl)
+    public function __construct(mysqli $conn)
     {
         $this->conn = $conn;
-        $this->apiUrl = $apiUrl; // URL da API em Node.js
     }
 
     // ADICIONAR/SALVAR PACIENTE
     public function salvar(Paciente $paciente)
     {
-        $url = $this->apiUrl . '/pacientes';
-        $data = [
-            'idPaciente' => $paciente->getIdPaciente(),
-            'nomeCompleto' => $paciente->getNome(),
-            'dataNascimento' => $paciente->getDataNascimento(),
-            'idade' => $paciente->getIdade(),
-            'telefone' => $paciente->getTelefone(),
-            'email' => $paciente->getEmail(),
-            'nomeMae' => $paciente->getNomeMae(),
-            'nomeMedicamento' => $paciente->getMedicamento(),
-            'nomePatologia' => $paciente->getPatologia()
-        ];
+        // Verifica duplicidade de e-mail
+        if (!empty($paciente->getEmail())) {
+            $verificaEmail = "SELECT COUNT(*) as total FROM pacientes WHERE email = ?";
+            $stmt = $this->conn->prepare($verificaEmail);
+            $emailCheck = $paciente->getEmail();
+            $stmt->bind_param("s", $emailCheck);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $dados = $result->fetch_assoc();
 
-        $options = [
-            'http' => [
-                'header' => "Content-Type: application/json\r\n",
-                'method' => 'POST',
-                'content' => json_encode($data)
-            ]
-        ];
-
-        $context = stream_context_create($options);
-        $response = file_get_contents($url, false, $context);
-
-        if ($response === false) {
-            throw new Exception("Erro ao salvar paciente na API.");
+            if ($dados['total'] > 0) {
+                throw new Exception("Este e-mail já está cadastrado no sistema.");
+            }
         }
+
+        // Variáveis para bind_param
+        $idPaciente = $paciente->getIdPaciente();
+        $nome = $paciente->getNome();
+        $dataNascimento = $paciente->getDataNascimento();
+        $idade = $paciente->getIdade();
+        $telefone = $paciente->getTelefone();
+        $email = $paciente->getEmail();
+        $nomeMae = $paciente->getNomeMae();
+        $medicamento = $paciente->getMedicamento() ?? '';
+        $patologia = $paciente->getPatologia() ?? '';
+
+        $sql = "INSERT INTO pacientes (
+            idPaciente, nomeCompleto, dataNascimento, idade, telefone, email, nomeMae, nomeMedicamento, nomePatologia
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param(
+            "sssisssss",
+            $idPaciente,
+            $nome,
+            $dataNascimento,
+            $idade,
+            $telefone,
+            $email,
+            $nomeMae,
+            $medicamento,
+            $patologia
+        );
+
+        $stmt->execute();
     }
 
     // BUSCA PACIENTE POR ID
@@ -169,13 +185,13 @@ class PacienteDAO
     // BUSCAR TODOS PACIENTES
     public function buscarTodos()
     {
-        $url = $this->apiUrl . '/pacientes';
-        $response = file_get_contents($url);
-        $pacientes = json_decode($response, true);
+        $sql = "SELECT * FROM pacientes ORDER BY nomeCompleto ASC";
+        $result = $this->conn->query($sql);
 
-        $resultado = [];
-        foreach ($pacientes as $dados) {
-            $resultado[] = new Paciente(
+        $pacientes = [];
+
+        while ($dados = $result->fetch_assoc()) {
+            $pacientes[] = new Paciente(
                 $dados['idPaciente'],
                 $dados['nomeCompleto'],
                 $dados['dataNascimento'],
@@ -188,6 +204,6 @@ class PacienteDAO
             );
         }
 
-        return $resultado;
+        return $pacientes;
     }
 }
