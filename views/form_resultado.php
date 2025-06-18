@@ -15,7 +15,7 @@ $idExame = $_GET['idExame'];
 
 // Consulta SQL para buscar os dados do exame e do paciente
 $sql = "SELECT e.idExame, e.exameTexto, e.resultado, e.dataExame,
-               p.nomeCompleto, p.idade, p.idPaciente
+               p.nome, p.idade, p.idPaciente
         FROM exames e
         JOIN pacientes p ON e.idPaciente = p.idPaciente
         WHERE e.idExame = ?";
@@ -41,7 +41,7 @@ if ($_POST && isset($_POST['salvar_informacoes'])) {
     
     $updateSql = "UPDATE exames SET informacoesAdicionais = ? WHERE idExame = ?";
     $updateStmt = $conn->prepare($updateSql);
-    $updateStmt->bind_param("ss", $informacoesAdicionais, $idExame);
+    $updateStmt->bind_param("si", $informacoesAdicionais, $idExame);
     
     if ($updateStmt->execute()) {
         $mensagemSucesso = "Informações salvas com sucesso!";
@@ -84,7 +84,7 @@ $informacoesSalvas = $infoData['informacoesAdicionais'] ? json_decode($infoData[
         </div>
 
         <div class="laudo-section">
-            <strong>Paciente:</strong> <?= $exame['nomeCompleto'] ?> <br>
+            <strong>Paciente:</strong> <?= $exame['nome'] ?> <br>
             <strong>ID Paciente:</strong> <?= $exame['idPaciente'] ?> <br>
             <strong>Idade:</strong> <?= $exame['idade'] ?> anos
         </div>

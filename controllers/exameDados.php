@@ -1,7 +1,10 @@
 <?php
-require_once '../config/db.php';
-require_once '../dao/PacienteDAO.php';
-require_once '../dao/ExameDAO.php';
+require_once __DIR__ . '/../config/db.php';
+require_once __DIR__ . '/../dao/PacienteDAO.php';
+require_once __DIR__ . '/../dao/ExameDAO.php';
+require_once __DIR__ . '/../models/Exame.php';
+require_once __DIR__ . '/../models/Paciente.php';
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $idPaciente = $_POST['procurarPaciente'] ?? '';

@@ -35,8 +35,8 @@ class ExameDAO {
     // Buscar exame por ID
     public function buscarPorId($idExame) {
         $sql = "SELECT e.*, 
-                       p.idPaciente, p.nomeCompleto, p.dataNascimento, p.idade, 
-                       p.telefone, p.email, p.nomeMae, p.nomeMedicamento, p.nomePatologia
+                       p.idPaciente, p.nome, p.dataNascimento, p.idade, 
+                       p.telefone, p.email, p.nomeMae, p.Medicamento, p.Patologia
                 FROM exames e
                 JOIN pacientes p ON e.idPaciente = p.idPaciente
                 WHERE e.idExame = ?";
@@ -61,8 +61,8 @@ class ExameDAO {
             $row['email'],
             $row['nomeMae'],
             $row['idade'],
-            $row['nomeMedicamento'],
-            $row['nomePatologia']
+            $row['Medicamento'],
+            $row['Patologia']
         );
 
         $exame = new Exame($paciente, $row['laboratorio'], $row['exameTexto'], $row['idExame']);
@@ -76,7 +76,7 @@ class ExameDAO {
     public function buscarTodos() {
         $sql = "SELECT e.idExame, e.exameTexto, e.dataExame, e.resultado, e.laboratorio,
                        p.idPaciente, p.nomeCompleto, p.dataNascimento, p.idade, 
-                       p.telefone, p.email, p.nomeMae, p.nomeMedicamento, p.nomePatologia
+                       p.telefone, p.email, p.nomeMae, p.Medicamento, p.Patologia
                 FROM exames e
                 JOIN pacientes p ON e.idPaciente = p.idPaciente
                 ORDER BY e.dataExame DESC";
@@ -99,8 +99,8 @@ class ExameDAO {
                 $row['email'],
                 $row['nomeMae'],
                 $row['idade'],
-                $row['nomeMedicamento'],
-                $row['nomePatologia']
+                $row['Medicamento'],
+                $row['Patologia']
             );
 
             $exame = new Exame($paciente, $row['laboratorio'], $row['exameTexto'], $row['idExame']);
@@ -142,8 +142,8 @@ class ExameDAO {
     // Buscar exames por ID de paciente
     public function buscarPorPacienteId($idPaciente) {
         $sql = "SELECT e.idExame, e.exameTexto, e.dataExame, e.resultado, e.laboratorio,
-                       p.idPaciente, p.nomeCompleto, p.dataNascimento, p.idade, 
-                       p.telefone, p.email, p.nomeMae, p.nomeMedicamento, p.nomePatologia
+                       p.idPaciente, p.nome, p.dataNascimento, p.idade, 
+                       p.telefone, p.email, p.nomeMae, p.Medicamento, p.Patologia
                 FROM exames e
                 JOIN pacientes p ON e.idPaciente = p.idPaciente
                 WHERE p.idPaciente LIKE ?
@@ -169,8 +169,8 @@ class ExameDAO {
                 $row['email'],
                 $row['nomeMae'],
                 $row['idade'],
-                $row['nomeMedicamento'],
-                $row['nomePatologia']
+                $row['Medicamento'],
+                $row['Patologia']
             );
 
             $exame = new Exame($paciente, $row['laboratorio'], $row['exameTexto'], $row['idExame']);
@@ -187,7 +187,7 @@ class ExameDAO {
     public function buscarPorPaciente($idPaciente)
 {
     $sql = "SELECT e.idExame, e.exameTexto, e.dataExame, e.resultado, 
-                   p.idPaciente, p.nomeCompleto, p.idade
+                   p.idPaciente, p.nome, p.idade
             FROM exames e
             JOIN pacientes p ON e.idPaciente = p.idPaciente
             WHERE p.idPaciente = ?

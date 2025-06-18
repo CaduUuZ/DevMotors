@@ -13,21 +13,9 @@ function calcularIdade($dataNascimento) {
     return $hoje->diff($nascimento)->y;
 }
 
-/**
- * Gera um ID aleatório de 8 caracteres
- */
-function gerar_id_aleatorio($tamanho = 8) {
-    $caracteres = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    $idPaciente = '';
-    for ($i = 0; $i < $tamanho; $i++) {
-        $idPaciente .= $caracteres[random_int(0, strlen($caracteres) - 1)];
-    }
-    return $idPaciente;
-}
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
-        $idPaciente = gerar_id_aleatorio(8);
+        $idPaciente = $_POST['idPaciente'] ?? null; // ID opcional, pode ser gerado automaticamente
         $nomeCompleto = $_POST['nome-completo'];
         $dataNascimento = $_POST['dataNascimento'];
         $telefone = $_POST['telefone'];

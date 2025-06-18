@@ -3,7 +3,7 @@ $servername = "localhost";
 $username = "root";
 $password = "";
 $dbname = "lab_faculdade";
-$port = 3307;
+$port = 3306;
 
 // Criar conexão
 $conn = new mysqli($servername, $username, $password, $dbname, $port);
@@ -26,16 +26,16 @@ CREATE TABLE usuarios (
 );
 
 CREATE TABLE pacientes (
-    idPaciente VARCHAR(8) PRIMARY KEY,
+    idPaciente INT AUTO_INCREMENT PRIMARY KEY,
     dataCadastro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    nomeCompleto VARCHAR(100) NOT NULL,
+    nome VARCHAR(100) NOT NULL,
     dataNascimento DATE NOT NULL,
     idade INT NOT NULL,
     telefone VARCHAR(20),
     email VARCHAR(100),
     nomeMae VARCHAR(100),
-    nomeMedicamento VARCHAR(100),
-    nomePatologia VARCHAR(100)
+    Medicamento VARCHAR(100),
+    Patologia VARCHAR(100)
 );
 
 CREATE TABLE exames (

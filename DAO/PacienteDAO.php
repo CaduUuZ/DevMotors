@@ -1,18 +1,20 @@
 <?php
+
+require_once __DIR__ . '/../models/Paciente.php';
 class PacienteDAO {
 
-    public function inserir(Paciente $paciente) {
+    public function salvar(Paciente $paciente) {
         $url = "http://localhost:3000/pacientes";
         $dados = [
-            //"id" => $fab->getId(),
+            "id" => $paciente->getIdPaciente(),
             "nome" => $paciente->getNome(),
             "dataNascimento" => $paciente->getDataNascimento(),
             "telefone" => $paciente->getTelefone(),
             "email" => $paciente->getEmail(),
             "nomeMae" => $paciente->getNomeMae(),
             "idade" => $paciente->getIdade(),
-            "nomeMedicamento" => $paciente->getNomeMedicamento(),
-            "nomePatologia" => $paciente->getNomePatologia()
+            "nomeMedicamento" => $paciente->getMedicamento(),
+            "nomePatologia" => $paciente->getPatologia()
         ];
 
         $options = [
@@ -42,16 +44,17 @@ class PacienteDAO {
 
     // Converter uma linha em obj
     public function listaPaciente($row){
-        $paciente = new Paciente();
-        $paciente->setId(htmlspecialchars($row['id']));
-        $paciente->setNome(htmlspecialchars($row['nome']));
-        $paciente->setDataNascimento(htmlspecialchars($row['dataNascimento']));
-        $paciente->setTelefone(htmlspecialchars($row['telefone']));
-        $paciente->setEmail(htmlspecialchars($row['email']));
-        $paciente->setNomeMae(htmlspecialchars($row['nomeMae']));
-        $paciente->setIdade(htmlspecialchars($row['idade']));
-        $paciente->setNomeMedicamento(htmlspecialchars($row['nomeMedicamento']));
-        $paciente->setNomePatologia(htmlspecialchars($row['nomePatologia']));
+        $paciente = new Paciente(
+            htmlspecialchars($row['idPaciente']),
+            htmlspecialchars($row['nome']),
+            htmlspecialchars($row['dataNascimento']),
+            htmlspecialchars($row['telefone']),
+            htmlspecialchars($row['email']),
+            htmlspecialchars($row['nomeMae']),
+            htmlspecialchars($row['idade']),
+            htmlspecialchars($row['Medicamento']),
+            htmlspecialchars($row['Patologia'])
+        );
         return $paciente;
     }
 
@@ -64,8 +67,8 @@ class PacienteDAO {
             "email" => $paciente->getEmail(),
             "nomeMae" => $paciente->getNomeMae(),
             "idade" => $paciente->getIdade(),
-            "nomeMedicamento" => $paciente->getNomeMedicamento(),
-            "nomePatologia" => $paciente->getNomePatologia()
+            "nomeMedicamento" => $paciente->getMedicamento(),
+            "nomePatologia" => $paciente->getPatologia()
             
         ];
 
@@ -88,8 +91,8 @@ class PacienteDAO {
         return json_decode($result, true);
     }
 
-    public function buscarPorId($id){
-        $url = "http://localhost:3000/pacientes/" . urlencode($id);
+    public function buscarPorId($idPaciente){
+        $url = "http://localhost:3000/pacientes/" . urlencode($idPaciente);
         try {
             // @file_get_contents() para evitar warnings automáticos.
             $response = @file_get_contents($url);
@@ -98,12 +101,31 @@ class PacienteDAO {
             }
             $data = json_decode($response, true);
             if ($data) {
-                return $this->listaFabricante($data);
+                return $this->listaPaciente($data);
             }
             return null;
         } catch (Exception $e) {
             echo "<p>Erro ao buscar fabricante por ID: </p> <p>{$e->getMessage()}</p>";
             return null;
+        }
+    }
+
+    public function buscarPorNome($nome){
+        $url = "http://localhost:3000/pacientes?nome=" . urlencode($nome);
+        try {
+            $response = @file_get_contents($url);
+            if ($response === FALSE) {
+                return []; // Retorna um array vazio se não encontrar nenhum paciente
+            }
+            $data = json_decode($response, true);
+            $pacientes = [];
+            foreach ($data as $row) {
+                $pacientes[] = $this->listaPaciente($row);
+            }
+            return $pacientes;
+        } catch (Exception $e) {
+            echo "<p>Erro ao buscar pacientes por nome: </p> <p>{$e->getMessage()}</p>";
+            return [];
         }
     }
 

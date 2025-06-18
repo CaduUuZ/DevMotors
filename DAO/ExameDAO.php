@@ -5,7 +5,7 @@ class ExameDAO {
         $url = "http://localhost:3000/exames";
         $dados = [
             "idExame" => $exame->getIdExame(),
-            "idPaciente" => $exame->getPaciente()->getId(),
+            "idPaciente" => $exame->getPaciente()->getIdPaciente(),
             "laboratorio" => $exame->getLaboratorio(),
             "exameTexto" => $exame->getExameTexto()
         ];
@@ -30,16 +30,14 @@ class ExameDAO {
         $exameList = array();
         $lista = json_decode($result, true);
         foreach ($lista as $exameList):
-            $exameList[] = $this->listaPaciente($exameList);
+            $exameList[] = $this->listaExame($exameList);
         endforeach;
         return $exameList;
     }
 
     // Converter uma linha em obj
     public function listaPaciente($row){
-        $exame = new Exame();
-        $exame->setIdExame(htmlspecialchars($row['idExame']));
-        $exame->setPaciente(new Paciente(
+        $paciente = new Paciente(
             htmlspecialchars($row['idPaciente']),
             htmlspecialchars($row['nomeCompleto']),
             htmlspecialchars($row['dataNascimento']),
@@ -47,11 +45,37 @@ class ExameDAO {
             htmlspecialchars($row['email']),
             htmlspecialchars($row['nomeMae']),
             htmlspecialchars($row['idade']),
-            htmlspecialchars($row['nomeMedicamento']),
-            htmlspecialchars($row['nomePatologia'])
-        ));
-        $exame->setLaboratorio(htmlspecialchars($row['laboratorio']));
-        $exame->setExameTexto(htmlspecialchars($row['exameTexto']));
+            htmlspecialchars($row['Medicamento']),
+            htmlspecialchars($row['Patologia'])
+        );
+        $exame = new Exame(
+            $paciente,
+            htmlspecialchars($row['idExame']),
+            htmlspecialchars($row['laboratorio']),
+            htmlspecialchars($row['exameTexto'])
+        );
+        return $exame;
+    }
+
+    // Método para converter array em objeto Exame
+    public function listaExame($row){
+        $paciente = new Paciente(
+            htmlspecialchars($row['idPaciente']),
+            htmlspecialchars($row['nomeCompleto'] ?? ''),
+            htmlspecialchars($row['dataNascimento'] ?? ''),
+            htmlspecialchars($row['telefone'] ?? ''),
+            htmlspecialchars($row['email'] ?? ''),
+            htmlspecialchars($row['nomeMae'] ?? ''),
+            htmlspecialchars($row['idade'] ?? ''),
+            htmlspecialchars($row['Medicamento'] ?? ''),
+            htmlspecialchars($row['Patologia'] ?? '')
+        );
+        $exame = new Exame(
+            $paciente,
+            htmlspecialchars($row['idExame']),
+            htmlspecialchars($row['laboratorio']),
+            htmlspecialchars($row['exameTexto'])
+        );
         return $exame;
     }
 
@@ -59,7 +83,7 @@ class ExameDAO {
         $url = "http://localhost:3000/exames/".$exame->getId();
         $dados = [
             "idExame" => $exame->getIdExame(),
-            "idPaciente" => $exame->getPaciente()->getId(),
+            "idPaciente" => $exame->getPaciente()->getIdPaciente(),
             "laboratorio" => $exame->getLaboratorio(),
             "exameTexto" => $exame->getExameTexto()
         ];
@@ -93,7 +117,7 @@ class ExameDAO {
             }
             $data = json_decode($response, true);
             if ($data) {
-                return $this->listaExames($data);
+                return $this->listaExame($data);
             }
             return null;
         } catch (Exception $e) {
@@ -113,7 +137,7 @@ class ExameDAO {
             if ($data) {
                 $exames = [];
                 foreach ($data as $item) {
-                    $exames[] = $this->listaPaciente($item);
+                    $exames[] = $this->listaExame($item);
                 }
                 return $exames;
             }
@@ -122,6 +146,30 @@ class ExameDAO {
             echo "<p>Erro ao listar exames: </p> <p>{$e->getMessage()}</p>";
             return null;
         }
+    }
+
+    public function salvar(Exame $exame) {
+        $url = "http://localhost:3000/exames";
+        $dados = [
+            "idExame" => $exame->getIdExame(),
+            "idPaciente" => $exame->getPaciente()->getIdPaciente(),
+            "laboratorio" => $exame->getLaboratorio(),
+            "exameTexto" => $exame->getExameTexto(),
+            "dataExame" => $exame->getDataExame(),
+            "resultado" => $exame->getResultado()
+        ];
+
+        $options = [
+            "http" => [
+                "header"  => "Content-type: application/json",
+                "method"  => "POST",
+                "content" => json_encode($dados)
+            ]
+        ];
+
+        $context = stream_context_create($options);
+        $result = file_get_contents($url, false, $context);
+        return $result ? json_decode($result, true) : false;
     }
 
 } // Fecha a classe Dao
