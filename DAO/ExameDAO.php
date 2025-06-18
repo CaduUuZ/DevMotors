@@ -1,231 +1,128 @@
 <?php
-require_once '../models/Exame.php';
-require_once '../models/Paciente.php';
-
 class ExameDAO {
-    private $conn;
 
-    public function __construct($conn) {
-        $this->conn = $conn;
+    public function inserir(Exame $exame) {
+        $url = "http://localhost:3000/exames";
+        $dados = [
+            "idExame" => $exame->getIdExame(),
+            "idPaciente" => $exame->getPaciente()->getId(),
+            "laboratorio" => $exame->getLaboratorio(),
+            "exameTexto" => $exame->getExameTexto()
+        ];
+
+        $options = [
+            "http" => [
+                "header"  => "Content-Type: application/json\r\n",
+                "method"  => "POST",
+                "content" => json_encode($dados)
+            ]
+        ];
+
+        $context = stream_context_create($options);
+        $result = file_get_contents($url, false, $context);
+        return $result ? json_decode($result, true) : false;
     }
 
-    // Salvar novo exame
-    public function salvar(Exame $exame) {
-        $sql = "INSERT INTO exames (idPaciente, laboratorio, exameTexto) VALUES (?, ?, ?)";
-        $stmt = $this->conn->prepare($sql);
-
-        if (!$stmt) {
-            throw new Exception("Erro na preparação da query: " . $this->conn->error);
-        }
-
-        $idPaciente = $exame->getPaciente()->getIdPaciente();
-        $laboratorio = $exame->getLaboratorio();
-        $exameTexto = $exame->getExameTexto();
-
-        $stmt->bind_param("sss", $idPaciente, $laboratorio, $exameTexto);
-
-        if (!$stmt->execute()) {
-            throw new Exception("Erro ao salvar exame: " . $stmt->error);
-        }
-
-        $exame->setIdExame($stmt->insert_id);
-        $stmt->close();
+    // Executa SELECT * FROM no banco
+    public function read(){
+        $url = "http://localhost:3000/exames";
+        $result = file_get_contents($url);
+        $exameList = array();
+        $lista = json_decode($result, true);
+        foreach ($lista as $exameList):
+            $exameList[] = $this->listaPaciente($exameList);
+        endforeach;
+        return $exameList;
     }
 
-    // Buscar exame por ID
-    public function buscarPorId($idExame) {
-        $sql = "SELECT e.*, 
-                       p.idPaciente, p.nomeCompleto, p.dataNascimento, p.idade, 
-                       p.telefone, p.email, p.nomeMae, p.nomeMedicamento, p.nomePatologia
-                FROM exames e
-                JOIN pacientes p ON e.idPaciente = p.idPaciente
-                WHERE e.idExame = ?";
-
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("i", $idExame);
-
-        if (!$stmt->execute()) {
-            throw new Exception("Erro ao buscar exame: " . $stmt->error);
-        }
-
-        $result = $stmt->get_result();
-        $row = $result->fetch_assoc();
-
-        if (!$row) return null;
-
-        $paciente = new Paciente(
-            $row['idPaciente'],
-            $row['nomeCompleto'],
-            $row['dataNascimento'],
-            $row['telefone'],
-            $row['email'],
-            $row['nomeMae'],
-            $row['idade'],
-            $row['nomeMedicamento'],
-            $row['nomePatologia']
-        );
-
-        $exame = new Exame($paciente, $row['laboratorio'], $row['exameTexto'], $row['idExame']);
-        $exame->setDataExame($row['dataExame']);
-        $exame->setResultado($row['resultado']);
-
+    // Converter uma linha em obj
+    public function listaPaciente($row){
+        $exame = new Exame();
+        $exame->setIdExame(htmlspecialchars($row['idExame']));
+        $exame->setPaciente(new Paciente(
+            htmlspecialchars($row['idPaciente']),
+            htmlspecialchars($row['nomeCompleto']),
+            htmlspecialchars($row['dataNascimento']),
+            htmlspecialchars($row['telefone']),
+            htmlspecialchars($row['email']),
+            htmlspecialchars($row['nomeMae']),
+            htmlspecialchars($row['idade']),
+            htmlspecialchars($row['nomeMedicamento']),
+            htmlspecialchars($row['nomePatologia'])
+        ));
+        $exame->setLaboratorio(htmlspecialchars($row['laboratorio']));
+        $exame->setExameTexto(htmlspecialchars($row['exameTexto']));
         return $exame;
     }
 
-    // Buscar todos os exames
-    public function buscarTodos() {
-        $sql = "SELECT e.idExame, e.exameTexto, e.dataExame, e.resultado, e.laboratorio,
-                       p.idPaciente, p.nomeCompleto, p.dataNascimento, p.idade, 
-                       p.telefone, p.email, p.nomeMae, p.nomeMedicamento, p.nomePatologia
-                FROM exames e
-                JOIN pacientes p ON e.idPaciente = p.idPaciente
-                ORDER BY e.dataExame DESC";
+    public function editar(Exame $exame){
+        $url = "http://localhost:3000/exames/".$exame->getId();
+        $dados = [
+            "idExame" => $exame->getIdExame(),
+            "idPaciente" => $exame->getPaciente()->getId(),
+            "laboratorio" => $exame->getLaboratorio(),
+            "exameTexto" => $exame->getExameTexto()
+        ];
 
-        $stmt = $this->conn->prepare($sql);
+        $options = [
+            "http" => [
+                "header"  => "Content-Type: application/json\r\n",
+                "method"  => "PUT",
+                "content" => json_encode($dados)
+                //,"ignore_errors" => true
+            ]
+        ];
 
-        if (!$stmt->execute()) {
-            throw new Exception("Erro ao buscar exames: " . $stmt->error);
+        $context = stream_context_create($options);
+        $result = file_get_contents($url, false, $context);
+        
+        if ($result === FALSE) {
+            return ["erro" => "Falha na requisição PATCH"];
         }
 
-        $result = $stmt->get_result();
-        $exames = [];
+        return json_decode($result, true);
+    }
 
-        while ($row = $result->fetch_assoc()) {
-            $paciente = new Paciente(
-                $row['idPaciente'],
-                $row['nomeCompleto'],
-                $row['dataNascimento'],
-                $row['telefone'],
-                $row['email'],
-                $row['nomeMae'],
-                $row['idade'],
-                $row['nomeMedicamento'],
-                $row['nomePatologia']
-            );
-
-            $exame = new Exame($paciente, $row['laboratorio'], $row['exameTexto'], $row['idExame']);
-            $exame->setDataExame($row['dataExame']);
-            $exame->setResultado($row['resultado']);
-
-            $exames[] = $exame;
+    public function buscarPorId($id){
+        $url = "http://localhost:3000/exames/" . urlencode($id);
+        try {
+            // @file_get_contents() para evitar warnings automáticos.
+            $response = @file_get_contents($url);
+            if ($response === FALSE) {
+                return null; // ID não encontrado ou erro na requisição
+            }
+            $data = json_decode($response, true);
+            if ($data) {
+                return $this->listaExames($data);
+            }
+            return null;
+        } catch (Exception $e) {
+            echo "<p>Erro ao buscar fabricante por ID: </p> <p>{$e->getMessage()}</p>";
+            return null;
         }
-
-        return $exames;
     }
 
-    // Excluir exame por ID
-    public function excluir($idExame) {
-        $sql = "DELETE FROM exames WHERE idExame = ?";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("i", $idExame);
-
-        if (!$stmt->execute()) {
-            throw new Exception("Erro ao excluir exame: " . $stmt->error);
+    public function buscarTodos(){
+        $url = "http://localhost:3000/exames";
+        try {
+            $response = @file_get_contents($url);
+            if ($response === FALSE) {
+                return null; // Erro na requisição
+            }
+            $data = json_decode($response, true);
+            if ($data) {
+                $exames = [];
+                foreach ($data as $item) {
+                    $exames[] = $this->listaPaciente($item);
+                }
+                return $exames;
+            }
+            return null;
+        } catch (Exception $e) {
+            echo "<p>Erro ao listar exames: </p> <p>{$e->getMessage()}</p>";
+            return null;
         }
-
-        return true;
     }
 
-    // Atualizar resultado do exame
-    public function atualizarResultado($idExame, $resultado) {
-        $sql = "UPDATE exames SET resultado = ? WHERE idExame = ?";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("si", $resultado, $idExame);
-
-        if (!$stmt->execute()) {
-            throw new Exception("Erro ao atualizar resultado: " . $stmt->error);
-        }
-
-        return true;
-    }
-
-    // Buscar exames por ID de paciente
-    public function buscarPorPacienteId($idPaciente) {
-        $sql = "SELECT e.idExame, e.exameTexto, e.dataExame, e.resultado, e.laboratorio,
-                       p.idPaciente, p.nomeCompleto, p.dataNascimento, p.idade, 
-                       p.telefone, p.email, p.nomeMae, p.nomeMedicamento, p.nomePatologia
-                FROM exames e
-                JOIN pacientes p ON e.idPaciente = p.idPaciente
-                WHERE p.idPaciente LIKE ?
-                ORDER BY e.dataExame DESC";
-
-        $stmt = $this->conn->prepare($sql);
-        $like = "%" . $idPaciente . "%";
-        $stmt->bind_param("s", $like);
-
-        if (!$stmt->execute()) {
-            throw new Exception("Erro ao buscar exames por paciente: " . $stmt->error);
-        }
-
-        $result = $stmt->get_result();
-        $exames = [];
-
-        while ($row = $result->fetch_assoc()) {
-            $paciente = new Paciente(
-                $row['idPaciente'],
-                $row['nomeCompleto'],
-                $row['dataNascimento'],
-                $row['telefone'],
-                $row['email'],
-                $row['nomeMae'],
-                $row['idade'],
-                $row['nomeMedicamento'],
-                $row['nomePatologia']
-            );
-
-            $exame = new Exame($paciente, $row['laboratorio'], $row['exameTexto'], $row['idExame']);
-            $exame->setDataExame($row['dataExame']);
-            $exame->setResultado($row['resultado']);
-
-            $exames[] = $exame;
-        }
-
-        return $exames;
-    }
-
-    // Buscar exames por paciente (usando ID)
-    public function buscarPorPaciente($idPaciente)
-{
-    $sql = "SELECT e.idExame, e.exameTexto, e.dataExame, e.resultado, 
-                   p.idPaciente, p.nomeCompleto, p.idade
-            FROM exames e
-            JOIN pacientes p ON e.idPaciente = p.idPaciente
-            WHERE p.idPaciente = ?
-            ORDER BY e.dataExame DESC";
-
-    $stmt = $this->conn->prepare($sql);
-
-    if (!$stmt) {
-        throw new Exception("Erro na preparação da consulta: " . $this->conn->error);
-    }
-
-    $stmt->bind_param("s", $idPaciente);
-
-    if (!$stmt->execute()) {
-        throw new Exception("Erro ao buscar exames por paciente: " . $stmt->error);
-    }
-
-    $result = $stmt->get_result();
-
-    $exames = [];
-    while ($row = $result->fetch_assoc()) {
-        $paciente = new Paciente(
-            $row['idPaciente'],
-            $row['nomeCompleto'],
-            null, null, null, null,
-            $row['idade'],
-            null, null
-        );
-
-        $exame = new Exame($paciente, null, $row['exameTexto']);
-        $exame->setIdExame($row['idExame']);
-        $exame->setDataExame($row['dataExame']);
-        $exame->setResultado($row['resultado']);
-
-        $exames[] = $exame;
-    }
-
-    return $exames;
-}
-
-}
+} // Fecha a classe Dao
+?>

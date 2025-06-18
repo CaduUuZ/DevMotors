@@ -4,9 +4,9 @@ require_once('../dao/PacienteDAO.php');
 require_once('../models/Paciente.php'); 
 
 $pacienteDAO = new PacienteDAO($conn);
-$search = $_GET['search'] ?? '';
 
-if (!empty($search)) {
+if (!isset($_GET['search'])) {
+    $search = $_GET['search'];
     $pacientes = $pacienteDAO->buscarPorNome($search);
 } else {
     $pacientes = $pacienteDAO->buscarTodos();

@@ -1,209 +1,130 @@
 <?php
+class PacienteDAO {
 
-require_once '../models/Paciente.php';
-require_once '../config/db.php';
+    public function inserir(Paciente $paciente) {
+        $url = "http://localhost:3000/pacientes";
+        $dados = [
+            //"id" => $fab->getId(),
+            "nome" => $paciente->getNome(),
+            "dataNascimento" => $paciente->getDataNascimento(),
+            "telefone" => $paciente->getTelefone(),
+            "email" => $paciente->getEmail(),
+            "nomeMae" => $paciente->getNomeMae(),
+            "idade" => $paciente->getIdade(),
+            "nomeMedicamento" => $paciente->getNomeMedicamento(),
+            "nomePatologia" => $paciente->getNomePatologia()
+        ];
 
-class PacienteDAO
-{
-    private $conn;
+        $options = [
+            "http" => [
+                "header"  => "Content-Type: application/json\r\n",
+                "method"  => "POST",
+                "content" => json_encode($dados)
+            ]
+        ];
 
-    public function __construct(mysqli $conn)
-    {
-        $this->conn = $conn;
+        $context = stream_context_create($options);
+        $result = file_get_contents($url, false, $context);
+        return $result ? json_decode($result, true) : false;
     }
 
-    // ADICIONAR/SALVAR PACIENTE
-    public function salvar(Paciente $paciente)
-    {
-        // Verifica duplicidade de e-mail
-        if (!empty($paciente->getEmail())) {
-            $verificaEmail = "SELECT COUNT(*) as total FROM pacientes WHERE email = ?";
-            $stmt = $this->conn->prepare($verificaEmail);
-            $emailCheck = $paciente->getEmail();
-            $stmt->bind_param("s", $emailCheck);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            $dados = $result->fetch_assoc();
-
-            if ($dados['total'] > 0) {
-                throw new Exception("Este e-mail já está cadastrado no sistema.");
-            }
-        }
-
-        // Variáveis para bind_param
-        $idPaciente = $paciente->getIdPaciente();
-        $nome = $paciente->getNome();
-        $dataNascimento = $paciente->getDataNascimento();
-        $idade = $paciente->getIdade();
-        $telefone = $paciente->getTelefone();
-        $email = $paciente->getEmail();
-        $nomeMae = $paciente->getNomeMae();
-        $medicamento = $paciente->getMedicamento() ?? '';
-        $patologia = $paciente->getPatologia() ?? '';
-
-        $sql = "INSERT INTO pacientes (
-            idPaciente, nomeCompleto, dataNascimento, idade, telefone, email, nomeMae, nomeMedicamento, nomePatologia
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param(
-            "sssisssss",
-            $idPaciente,
-            $nome,
-            $dataNascimento,
-            $idade,
-            $telefone,
-            $email,
-            $nomeMae,
-            $medicamento,
-            $patologia
-        );
-
-        $stmt->execute();
+    // Executa SELECT * FROM no banco
+    public function read(){
+        $url = "http://localhost:3000/fabricantes";
+        $result = file_get_contents($url);
+        $pacienteList = array();
+        $lista = json_decode($result, true);
+        foreach ($lista as $pacienteList):
+            $pacienteList[] = $this->listaPaciente($pacienteList);
+        endforeach;
+        return $pacienteList;
     }
 
-    // BUSCA PACIENTE POR ID
-    public function buscarPorId($id)
-    {
-        $sql = "SELECT * FROM pacientes WHERE idPaciente = ?";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("i", $id);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        if ($result->num_rows > 0) {
-            $dados = $result->fetch_assoc();
-            return new Paciente(
-                $dados['idPaciente'],
-                $dados['nomeCompleto'],
-                $dados['dataNascimento'],
-                $dados['telefone'],
-                $dados['email'],
-                $dados['nomeMae'],
-                $dados['idade'],
-                $dados['nomeMedicamento'],
-                $dados['nomePatologia']
-            );
-        }
-
-        return null; // Retorna null se não encontrar o paciente
+    // Converter uma linha em obj
+    public function listaPaciente($row){
+        $paciente = new Paciente();
+        $paciente->setId(htmlspecialchars($row['id']));
+        $paciente->setNome(htmlspecialchars($row['nome']));
+        $paciente->setDataNascimento(htmlspecialchars($row['dataNascimento']));
+        $paciente->setTelefone(htmlspecialchars($row['telefone']));
+        $paciente->setEmail(htmlspecialchars($row['email']));
+        $paciente->setNomeMae(htmlspecialchars($row['nomeMae']));
+        $paciente->setIdade(htmlspecialchars($row['idade']));
+        $paciente->setNomeMedicamento(htmlspecialchars($row['nomeMedicamento']));
+        $paciente->setNomePatologia(htmlspecialchars($row['nomePatologia']));
+        return $paciente;
     }
 
-    // EXCLUIR PACIENTE
-    public function excluir($id)
-    {
-        if (empty($id) || !is_string($id)) {
-            throw new Exception("ID inválido para exclusão.");
-        }
-    
-        $sql = "DELETE FROM pacientes WHERE idPaciente = ?";
-        $stmt = $this->conn->prepare($sql);
-        if (!$stmt) {
-            throw new Exception("Erro na preparação da query: " . $this->conn->error);
-        }
-    
-        $stmt->bind_param("s", $id);
+    public function editar(Paciente $paciente){
+        $url = "http://localhost:3000/pacientes/".$paciente->getId();
+        $dados = [
+            "nome" => $paciente->getNome(),
+            "dataNascimento" => $paciente->getDataNascimento(),
+            "telefone" => $paciente->getTelefone(),
+            "email" => $paciente->getEmail(),
+            "nomeMae" => $paciente->getNomeMae(),
+            "idade" => $paciente->getIdade(),
+            "nomeMedicamento" => $paciente->getNomeMedicamento(),
+            "nomePatologia" => $paciente->getNomePatologia()
+            
+        ];
+
+        $options = [
+            "http" => [
+                "header"  => "Content-Type: application/json\r\n",
+                "method"  => "PUT",
+                "content" => json_encode($dados)
+                //,"ignore_errors" => true
+            ]
+        ];
+
+        $context = stream_context_create($options);
+        $result = file_get_contents($url, false, $context);
         
-        if (!$stmt->execute()) {
-            throw new Exception("Erro ao excluir paciente: " . $stmt->error);
+        if ($result === FALSE) {
+            return ["erro" => "Falha na requisição PATCH"];
         }
+
+        return json_decode($result, true);
     }
-    
 
-    // ATUALIZAR PACIENTE
-    public function atualizar(Paciente $paciente)
-    {
-        // Variáveis para bind_param
-        $nome = $paciente->getNome();
-        $dataNascimento = $paciente->getDataNascimento();
-        $idade = $paciente->getIdade();
-        $telefone = $paciente->getTelefone();
-        $email = $paciente->getEmail();
-        $nomeMae = $paciente->getNomeMae();
-        $medicamento = $paciente->getMedicamento() ?? '';
-        $patologia = $paciente->getPatologia() ?? '';
-        $idPaciente = $paciente->getIdPaciente();
-
-        $sql = "UPDATE pacientes SET 
-            nomeCompleto = ?, 
-            dataNascimento = ?, 
-            idade = ?, 
-            telefone = ?, 
-            email = ?, 
-            nomeMae = ?, 
-            nomeMedicamento = ?, 
-            nomePatologia = ? 
-        WHERE idPaciente = ?";
-
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param(
-            "sssisssssi",
-            $nome,
-            $dataNascimento,
-            $idade,
-            $telefone,
-            $email,
-            $nomeMae,
-            $medicamento,
-            $patologia,
-            $idPaciente
-        );
-
-        if (!$stmt->execute()) {
-            throw new Exception("Erro ao atualizar paciente: " . $stmt->error);
+    public function buscarPorId($id){
+        $url = "http://localhost:3000/pacientes/" . urlencode($id);
+        try {
+            // @file_get_contents() para evitar warnings automáticos.
+            $response = @file_get_contents($url);
+            if ($response === FALSE) {
+                return null; // ID não encontrado ou erro na requisição
+            }
+            $data = json_decode($response, true);
+            if ($data) {
+                return $this->listaFabricante($data);
+            }
+            return null;
+        } catch (Exception $e) {
+            echo "<p>Erro ao buscar fabricante por ID: </p> <p>{$e->getMessage()}</p>";
+            return null;
         }
     }
 
-    // BUSCAR PACIENTE POR NOME
-    public function buscarPorNome($nome)
-    {
-        $sql = "SELECT * FROM pacientes WHERE nomeCompleto LIKE ?";
-        $stmt = $this->conn->prepare($sql);
-        $nomeBusca = '%' . $nome . '%';
-        $stmt->bind_param("s", $nomeBusca);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $pacientes = [];
-
-        while ($dados = $result->fetch_assoc()) {
-            $pacientes[] = new Paciente(
-                $dados['idPaciente'],
-                $dados['nomeCompleto'],
-                $dados['dataNascimento'],
-                $dados['telefone'],
-                $dados['email'],
-                $dados['nomeMae'],
-                $dados['idade'],
-                $dados['nomeMedicamento'],
-                $dados['nomePatologia']
-            );
+    public function buscarTodos(){
+        $url = "http://localhost:3000/pacientes";
+        try {
+            $response = @file_get_contents($url);
+            if ($response === FALSE) {
+                return []; // Retorna um array vazio se não encontrar nenhum paciente
+            }
+            $data = json_decode($response, true);
+            $pacientes = [];
+            foreach ($data as $row) {
+                $pacientes[] = $this->listaPaciente($row);
+            }
+            return $pacientes;
+        } catch (Exception $e) {
+            echo "<p>Erro ao buscar pacientes: </p> <p>{$e->getMessage()}</p>";
+            return [];
         }
-
-        return $pacientes;
     }
 
-    // BUSCAR TODOS PACIENTES
-    public function buscarTodos()
-    {
-        $sql = "SELECT * FROM pacientes ORDER BY nomeCompleto ASC";
-        $result = $this->conn->query($sql);
-
-        $pacientes = [];
-
-        while ($dados = $result->fetch_assoc()) {
-            $pacientes[] = new Paciente(
-                $dados['idPaciente'],
-                $dados['nomeCompleto'],
-                $dados['dataNascimento'],
-                $dados['telefone'],
-                $dados['email'],
-                $dados['nomeMae'],
-                $dados['idade'],
-                $dados['nomeMedicamento'],
-                $dados['nomePatologia']
-            );
-        }
-
-        return $pacientes;
-    }
-}
+} // Fecha a classe Dao
+?>
