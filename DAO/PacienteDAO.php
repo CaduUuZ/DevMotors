@@ -52,8 +52,8 @@ class PacienteDAO {
             htmlspecialchars($row['email']),
             htmlspecialchars($row['nomeMae']),
             htmlspecialchars($row['idade']),
-            htmlspecialchars($row['Medicamento']),
-            htmlspecialchars($row['Patologia'])
+            htmlspecialchars(isset($row['Medicamento']) ? $row['Medicamento'] : ''),
+            htmlspecialchars(isset($row['Patologia']) ? $row['Patologia'] : '')
         );
         return $paciente;
     }

@@ -4,9 +4,16 @@ require_once('../dao/PacienteDAO.php');
 require_once('../models/Paciente.php'); 
 
 $pacienteDAO = new PacienteDAO($conn);
-$search = isset($_GET['search']) ? $_GET['search'] : '';
-if (!empty($search)) {
-    $pacientes = $pacienteDAO->buscarPorNome($search);
+$search = isset($_GET['search']) ? trim($_GET['search']) : '';
+if ($search !== '') {
+    if (is_numeric($search)) {
+        // Busca por ID
+        $paciente = $pacienteDAO->buscarPorId($search);
+        $pacientes = $paciente ? [$paciente] : [];
+    } else {
+        // Busca por nome
+        $pacientes = $pacienteDAO->buscarPorNome($search);
+    }
 } else {
     $pacientes = $pacienteDAO->buscarTodos();
 }
@@ -88,7 +95,7 @@ if (!empty($search)) {
 
             <div class="mb-3">
               <label for="modal-nomeCompleto" class="form-label">Nome Completo</label>
-              <input type="text" class="form-control" name="nomeCompleto" id="modal-nomeCompleto" required>
+              <input type="text" class="form-control" name="nome" id="modal-nomeCompleto" required>
             </div>
 
             <div class="mb-3">
@@ -113,12 +120,12 @@ if (!empty($search)) {
 
             <div class="mb-3">
               <label for="modal-nomeMedicamento" class="form-label">Nome Medicamento</label>
-              <input type="text" class="form-control" name="nomeMedicamento" id="modal-nomeMedicamento">
+              <input type="text" class="form-control" name="medicamento" id="modal-nomeMedicamento">
             </div>
 
             <div class="mb-3">
               <label for="modal-nomePatologia" class="form-label">Nome Patologia</label>
-              <input type="text" class="form-control" name="nomePatologia" id="modal-nomePatologia">
+              <input type="text" class="form-control" name="patologia" id="modal-nomePatologia">
             </div>
           </div>
 
@@ -154,11 +161,20 @@ if (!empty($search)) {
         document.getElementById('modal-idPaciente').value = this.dataset.id;
         document.getElementById('modal-nomeCompleto').value = this.dataset.nome;
         document.getElementById('modal-idade').value = this.dataset.idade;
-        document.getElementById('modal-email').value = this.dataset.email;
-        document.getElementById('modal-telefone').value = this.dataset.telefone;
-        document.getElementById('modal-dataNascimento').value = this.dataset.dataNascimento;
-        document.getElementById('modal-nomeMedicamento').value = this.dataset.nomeMedicamento;
-        document.getElementById('modal-nomePatologia').value = this.dataset.nomePatologia;
+        document.getElementById('modal-email').value = this.dataset.email !== "null" ? this.dataset.email : "";
+        document.getElementById('modal-telefone').value = this.dataset.telefone !== "null" ? this.dataset.telefone : "";
+
+        // Corrige data para o formato do input date
+        let dataNasc = this.dataset.dataNascimento;
+        if (dataNasc && dataNasc.length >= 10) {
+          dataNasc = dataNasc.substring(0, 10);
+        } else {
+          dataNasc = "";
+        }
+        document.getElementById('modal-dataNascimento').value = dataNasc;
+
+        document.getElementById('modal-nomeMedicamento').value = this.dataset.nomeMedicamento !== "null" ? this.dataset.nomeMedicamento : "";
+        document.getElementById('modal-nomePatologia').value = this.dataset.nomePatologia !== "null" ? this.dataset.nomePatologia : "";
 
         const modal = new bootstrap.Modal(document.getElementById('editPacienteModal'));
         modal.show();

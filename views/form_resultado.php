@@ -22,7 +22,7 @@ $sql = "SELECT e.idExame, e.exameTexto, e.resultado, e.dataExame,
 
 // Prepara e executa a consulta
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("s", $idExame);
+$stmt->bind_param("i", $idExame);
 $stmt->execute();
 $result = $stmt->get_result();
 
@@ -53,7 +53,7 @@ if ($_POST && isset($_POST['salvar_informacoes'])) {
 // Buscar informações adicionais já salvas
 $infoSql = "SELECT informacoesAdicionais FROM exames WHERE idExame = ?";
 $infoStmt = $conn->prepare($infoSql);
-$infoStmt->bind_param("i", $idExame);
+$infoStmt->bind_param("i", $idExame); 
 $infoStmt->execute();
 $infoResult = $infoStmt->get_result();
 $infoData = $infoResult->fetch_assoc();

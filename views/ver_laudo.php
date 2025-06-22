@@ -1,19 +1,16 @@
 <?php
+require_once('../config/db.php');
 
 
-// Configuração do banco 
-$host = 'localhost';
-$dbname = 'lab_faculdade';
-$username = 'root';
-$password = '';
-
-// Conectar ao banco
 try {
-  $pdo = new PDO("mysql:host=$host;port=3307;dbname=$dbname;charset=utf8mb4", $username, $password);
+    $pdo = new PDO("mysql:host=localhost;port=$port;dbname=$dbname;charset=utf8mb4", $username, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
     die("Erro de conexão: " . $e->getMessage());
 }
+
+// Conectar ao banco
+
 
 // Função para buscar dados do exame
 function buscarExame($pdo, $idExame) {
@@ -115,7 +112,7 @@ $resultados = processarResultados($dados['informacoesAdicionais']);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laudo - <?= htmlspecialchars($dados['nomeCompleto']) ?></title>
+    <title>Laudo - <?= htmlspecialchars($dados['nome']) ?></title>
     <link rel="stylesheet" href="./css/ver_laudo.css">
 </head>
 <body>
@@ -136,7 +133,7 @@ $resultados = processarResultados($dados['informacoesAdicionais']);
         <h3>DADOS DO PACIENTE</h3>
         <div class="linha">
             <span class="label">Nome:</span>
-            <?= htmlspecialchars($dados['nomeCompleto']) ?>
+            <?= htmlspecialchars($dados['nome']) ?>
         </div>
         <div class="linha">
             <span class="label">ID Paciente:</span>

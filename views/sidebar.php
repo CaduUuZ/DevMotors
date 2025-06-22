@@ -27,18 +27,6 @@
             <li><a href="solicitarExame.php"><i class="fa-solid fa-file-pen"></i> Solicitar Exame</a></li>
             <!-- Link para a página de lista de exames -->
             <li><a href="listaExames.php"><i class="fa-solid fa-list"></i> Lista de Exames</a></li>
-            <!-- Menu suspenso para categorias de laudos -->
-            <li class="dropdown">
-                <a href="#" class="dropbtn"><i class="fa-solid fa-file"></i>  Laudos   <i class="fa-solid fa-caret-down"></i></a>
-                <ul class="dropdown-content">
-                    <!-- Links para diferentes categorias de laudos -->
-                    <li><a href="#">Bioquímica</a></li>
-                    <li><a href="#">Hematologia</a></li>
-                    <li><a href="#">Microbiologia</a></li>
-                    <li><a href="#">Parasitologia</a></li>
-                    <li><a href="#">Urinálise</a></li>
-                </ul>
-            </li>
             <!-- Link para logout -->
             <li><a href="../controllers/logout.php" class="logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
             <!-- Link para a página de perfil do usuário -->

@@ -55,7 +55,7 @@ class ExameDAO {
 
         $paciente = new Paciente(
             $row['idPaciente'],
-            $row['nomeCompleto'],
+            $row['nome'],
             $row['dataNascimento'],
             $row['telefone'],
             $row['email'],
@@ -75,7 +75,7 @@ class ExameDAO {
     // Buscar todos os exames
     public function buscarTodos() {
         $sql = "SELECT e.idExame, e.exameTexto, e.dataExame, e.resultado, e.laboratorio,
-                       p.idPaciente, p.nomeCompleto, p.dataNascimento, p.idade, 
+                       p.idPaciente, p.nome, p.dataNascimento, p.idade, 
                        p.telefone, p.email, p.nomeMae, p.Medicamento, p.Patologia
                 FROM exames e
                 JOIN pacientes p ON e.idPaciente = p.idPaciente
@@ -163,7 +163,7 @@ class ExameDAO {
         while ($row = $result->fetch_assoc()) {
             $paciente = new Paciente(
                 $row['idPaciente'],
-                $row['nomeCompleto'],
+                $row['nome'],
                 $row['dataNascimento'],
                 $row['telefone'],
                 $row['email'],
@@ -211,7 +211,7 @@ class ExameDAO {
     while ($row = $result->fetch_assoc()) {
         $paciente = new Paciente(
             $row['idPaciente'],
-            $row['nomeCompleto'],
+            $row['nome'],
             null, null, null, null,
             $row['idade'],
             null, null

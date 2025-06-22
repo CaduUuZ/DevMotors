@@ -39,7 +39,7 @@ router.put('/:id', (req, res) => {
   const id = parseInt(req.params.id);
   const { nome, dataNascimento, telefone, email, nomeMae, idade, medicamento, patologia } = req.body;
   db.query(
-    'UPDATE pacientes SET nome=?, dataNascimento=?, telefone=?, email=?, nomeMae=?, idade=?, medicamento=?, patologia=? WHERE id=?',
+    'UPDATE pacientes SET nome=?, dataNascimento=?, telefone=?, email=?, nomeMae=?, idade=?, medicamento=?, patologia=? WHERE idPaciente=?',
     [nome, dataNascimento, telefone, email, nomeMae, idade, medicamento, patologia, id],
     (err, result) => {
       if (err) return res.status(500).json({ error: err.message });
@@ -52,7 +52,7 @@ router.put('/:id', (req, res) => {
 // Excluir paciente
 router.delete('/:id', (req, res) => {
   const id = parseInt(req.params.id);
-  db.query('DELETE FROM pacientes WHERE id = ?', [id], (err, result) => {
+  db.query('DELETE FROM pacientes WHERE idPaciente = ?', [id], (err, result) => {
     if (err) return res.status(500).json({ error: err.message });
     if (result.affectedRows === 0) return res.status(404).json({ message: 'Paciente não encontrado' });
     res.status(204).send();

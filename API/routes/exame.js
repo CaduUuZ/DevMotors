@@ -4,7 +4,20 @@ const db = require('../db');
 
 // Listar todos os exames
 router.get('/', (req, res) => {
-  db.query('SELECT * FROM exames', (err, results) => {
+  const { paciente } = req.query;
+  let sql = `
+    SELECT 
+      e.idExame, e.laboratorio, e.exameTexto, e.dataExame, e.resultado, e.informacoesAdicionais,
+      p.idPaciente, p.nome, p.dataNascimento, p.telefone, p.email, p.nomeMae, p.idade, p.medicamento, p.patologia
+    FROM exames e
+    JOIN pacientes p ON e.idPaciente = p.idPaciente
+  `;
+  let params = [];
+  if (paciente) {
+    sql += ' WHERE e.idPaciente = ?';
+    params.push(paciente);
+  }
+  db.query(sql, params, (err, results) => {
     if (err) return res.status(500).json({ error: err.message });
     res.json(results);
   });
@@ -56,7 +69,7 @@ router.put('/:id', (req, res) => {
 // Excluir exame
 router.delete('/:id', (req, res) => {
   const id = parseInt(req.params.id);
-  db.query('DELETE FROM exames WHERE id = ?', [id], (err, result) => {
+  db.query('DELETE FROM exames WHERE idExame = ?', [id], (err, result) => {
     if (err) return res.status(500).json({ error: err.message });
     if (result.affectedRows === 0) return res.status(404).json({ message: 'Exame não encontrado' });
     res.status(204).send();

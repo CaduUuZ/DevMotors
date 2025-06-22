@@ -58,23 +58,25 @@ class ExameDAO {
     }
 
     // Método para converter array em objeto Exame
-    public function listaExame($row){
+    public function listaExame($row) {
         $paciente = new Paciente(
-            htmlspecialchars($row['idPaciente']),
-            htmlspecialchars($row['nomeCompleto'] ?? ''),
-            htmlspecialchars($row['dataNascimento'] ?? ''),
-            htmlspecialchars($row['telefone'] ?? ''),
-            htmlspecialchars($row['email'] ?? ''),
-            htmlspecialchars($row['nomeMae'] ?? ''),
-            htmlspecialchars($row['idade'] ?? ''),
-            htmlspecialchars($row['Medicamento'] ?? ''),
-            htmlspecialchars($row['Patologia'] ?? '')
+            $row['idPaciente'],
+            $row['nome'],
+            $row['dataNascimento'],
+            $row['telefone'],
+            $row['email'],
+            $row['nomeMae'],
+            $row['idade'],
+            $row['medicamento'],
+            $row['patologia']
         );
         $exame = new Exame(
             $paciente,
-            htmlspecialchars($row['idExame']),
-            htmlspecialchars($row['laboratorio']),
-            htmlspecialchars($row['exameTexto'])
+            $row['laboratorio'],
+            $row['exameTexto'],
+            $row['idExame'],
+            $row['dataExame'],
+            $row['resultado']
         );
         return $exame;
     }
@@ -170,6 +172,38 @@ class ExameDAO {
         $context = stream_context_create($options);
         $result = file_get_contents($url, false, $context);
         return $result ? json_decode($result, true) : false;
+    }
+
+    public function buscarPorPaciente($idPaciente) {
+        $url = "http://localhost:3000/exames?paciente=" . urlencode($idPaciente);
+        $response = @file_get_contents($url);
+        if ($response === FALSE) {
+            return [];
+        }
+        $data = json_decode($response, true);
+        if ($data) {
+            $exames = [];
+            foreach ($data as $item) {
+                $exames[] = $this->listaExame($item);
+            }
+            return $exames;
+        }
+        return [];
+    }
+
+    public function excluir($idExame) {
+        $url = "http://localhost:3000/exames/" . urlencode($idExame);
+
+        $options = [
+            "http" => [
+                "method" => "DELETE"
+            ]
+        ];
+        $context = stream_context_create($options);
+        $result = @file_get_contents($url, false, $context);
+
+        // Retorna true se não houve erro
+        return $result !== false;
     }
 
 } // Fecha a classe Dao

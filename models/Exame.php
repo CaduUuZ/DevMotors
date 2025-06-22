@@ -15,6 +15,8 @@ class Exame {
         $this->laboratorio = $laboratorio;
         $this->exameTexto = $exameTexto;
         $this->idExame = $idExame;
+        $this->dataExame = $dataExame;
+        $this->resultado = $resultado;
     }
 
     // Getters e Setters
@@ -66,26 +68,4 @@ class Exame {
         $this->resultado = $resultado;
     }
 
-    // Método salvar usando conexão (pode ser usado ou substituído pelo DAO)
-    public function salvar($conn) {
-        $sql = "INSERT INTO exames (idPaciente, laboratorio, exameTexto) VALUES (?, ?, ?)";
-
-        $stmt = $conn->prepare($sql);
-
-        if (!$stmt) {
-            throw new Exception("Erro na preparação da query: " . $conn->error);
-        }
-
-        $idPaciente = $this->paciente->getIdPaciente();
-
-        $stmt->bind_param("sss", $idPaciente, $this->laboratorio, $this->exameTexto);
-
-        if (!$stmt->execute()) {
-            throw new Exception("Erro ao salvar exame: " . $stmt->error);
-        }
-
-        $this->idExame = $stmt->insert_id; // Pega o ID gerado no banco
-
-        $stmt->close();
-    }
 }

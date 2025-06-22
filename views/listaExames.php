@@ -20,6 +20,11 @@ try {
 } catch (Exception $e) {
     die("Erro ao carregar exames: " . $e->getMessage());
 }
+
+// Garante que $exames seja sempre um array
+if (!is_array($exames)) {
+    $exames = [];
+}
 ?>
 
 <!DOCTYPE html>
@@ -43,9 +48,6 @@ try {
       <label for="buscaId">Buscar por ID do Paciente:</label>
       <input type="text" name="buscaId" id="buscaId" placeholder="Ex: PAC123" value="<?= htmlspecialchars($buscaId) ?>">
       <button type="submit" class="btn-primary">Buscar</button>
-      <?php if (!empty($buscaId)): ?>
-        <a href="lista_exames.php" class="btn-primary">Limpar</a>
-      <?php endif; ?>
     </form>
   </div>
 
@@ -77,7 +79,9 @@ try {
               <td><?= $exame->getPaciente()->getNome() ?></td>
               <td><?= $exame->getPaciente()->getIdade() ?></td>
               <td><?= $exame->getExameTexto() ?></td>
-              <td><?= date('d/m/Y H:i', strtotime($exame->getDataExame())) ?></td>
+              <td>
+                <?= !empty($exame->getDataExame()) ? (new DateTime($exame->getDataExame()))->format('d/m/Y H:i') : '-' ?>
+              </td>
               <td class="actions-cell">
                 <div class="actions-container">
                   <?php if (!empty($exame->getResultado())): ?>
