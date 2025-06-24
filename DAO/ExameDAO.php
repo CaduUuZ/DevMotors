@@ -1,4 +1,7 @@
 <?php
+require_once __DIR__ . '/../models/Exame.php';
+require_once __DIR__ . '/../models/Paciente.php';
+
 class ExameDAO {
 
     public function inserir(Exame $exame) {
@@ -50,9 +53,11 @@ class ExameDAO {
         );
         $exame = new Exame(
             $paciente,
-            htmlspecialchars($row['idExame']),
             htmlspecialchars($row['laboratorio']),
-            htmlspecialchars($row['exameTexto'])
+            htmlspecialchars($row['exameTexto']),
+            htmlspecialchars($row['idExame']),
+            htmlspecialchars($row['dataExame']),
+            htmlspecialchars($row['resultado'])
         );
         return $exame;
     }
@@ -82,7 +87,7 @@ class ExameDAO {
     }
 
     public function editar(Exame $exame){
-        $url = "http://localhost:3000/exames/".$exame->getId();
+        $url = "http://localhost:3000/exames/".$exame->getIdExame();
         $dados = [
             "idExame" => $exame->getIdExame(),
             "idPaciente" => $exame->getPaciente()->getIdPaciente(),

@@ -7,22 +7,16 @@ if (isset($_GET['id'])) {
     $idPaciente = $_GET['id'];
 
     try {
-        $exameDAO = new ExameDAO($conn);
-        $pacienteDAO = new PacienteDAO($conn);
-
-        // Excluir exames relacionados
+        $exameDAO = new ExameDAO();
         $exames = $exameDAO->buscarPorPaciente($idPaciente);
-        foreach ($exames as $exame) {
-            $exameDAO->excluir($exame->getIdExame());
-        }
 
-        // Excluir paciente
+        $pacienteDAO = new PacienteDAO($conn);
         $pacienteDAO->excluir($idPaciente);
 
         header("Location: ../views/pesquisaPaciente.php?success=1");
         exit;
     } catch (Exception $e) {
-        $msg = urlencode("Erro ao excluir paciente ou exames: " . $e->getMessage());
+        $msg = urlencode("Erro ao excluir paciente: " . $e->getMessage());
         header("Location: ../views/pesquisaPaciente.php?success=0&error={$msg}");
         exit;
     }

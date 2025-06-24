@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Paciente.php';
+require_once __DIR__ . '/Paciente.php';
 
 class Exame {
     private $idExame;
