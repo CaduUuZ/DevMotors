@@ -45,15 +45,15 @@ class PacienteDAO {
     // Converter uma linha em obj
     public function listaPaciente($row){
         $paciente = new Paciente(
-            htmlspecialchars($row['idPaciente']),
-            htmlspecialchars($row['nome']),
-            htmlspecialchars($row['dataNascimento']),
-            htmlspecialchars($row['telefone']),
-            htmlspecialchars($row['email']),
-            htmlspecialchars($row['nomeMae']),
-            htmlspecialchars($row['idade']),
-            htmlspecialchars(isset($row['Medicamento']) ? $row['Medicamento'] : ''),
-            htmlspecialchars(isset($row['Patologia']) ? $row['Patologia'] : '')
+            isset($row['idPaciente']) ? htmlspecialchars($row['idPaciente']) : '',
+            isset($row['nome']) ? htmlspecialchars($row['nome']) : '',
+            isset($row['dataNascimento']) ? htmlspecialchars($row['dataNascimento']) : '',
+            isset($row['telefone']) ? htmlspecialchars($row['telefone']) : '',
+            isset($row['email']) ? htmlspecialchars($row['email']) : '',
+            isset($row['nomeMae']) ? htmlspecialchars($row['nomeMae']) : '',
+            isset($row['idade']) ? htmlspecialchars($row['idade']) : '',
+            isset($row['Medicamento']) ? htmlspecialchars($row['Medicamento']) : '',
+            isset($row['Patologia']) ? htmlspecialchars($row['Patologia']) : ''
         );
         return $paciente;
     }
@@ -146,6 +146,19 @@ class PacienteDAO {
             echo "<p>Erro ao buscar pacientes: </p> <p>{$e->getMessage()}</p>";
             return [];
         }
+    }
+
+    public function excluir($idPaciente) {
+        $url = "http://localhost:3000/pacientes/" . urlencode($idPaciente);
+        $options = [
+            "http" => [
+                "header"  => "Content-Type: application/json\r\n",
+                "method"  => "DELETE"
+            ]
+        ];
+        $context = stream_context_create($options);
+        $result = file_get_contents($url, false, $context);
+        return $result ? json_decode($result, true) : false;
     }
 
 } // Fecha a classe Dao
