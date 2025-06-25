@@ -1,12 +1,12 @@
 {
-    "name": "appfabricantes",
+    "name": "lab-faculdade",
     "version": "1.0.0",
-    "description": "exemplo PHP",
+    "description": "API para lab-faculdade",
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
     },
-    "author": "costasilvati",
+    "author": "João Rafael",
     "license": "ISC",
     "dependencies": {
         "body-parser": "^2.2.0",

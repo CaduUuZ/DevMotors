@@ -7,7 +7,7 @@ if (isset($_GET['id'])) {
     $idPaciente = $_GET['id'];
 
     try {
-        $exameDAO = new ExameDAO();
+        $exameDAO = new ExameDAO($conn);
         $exames = $exameDAO->buscarPorPaciente($idPaciente);
 
         $pacienteDAO = new PacienteDAO($conn);
