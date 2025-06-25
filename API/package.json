@@ -9,7 +9,6 @@
     "author": "costasilvati",
     "license": "ISC",
     "dependencies": {
-        "@prisma/client": "^6.10.1",
         "body-parser": "^2.2.0",
         "ejs": "^3.1.10",
         "express": "^5.1.0",
@@ -18,8 +17,5 @@
         "mysql2": "^3.14.1",
         "nodemin": "^1.0.1",
         "path": "^0.12.7"
-    },
-    "devDependencies": {
-        "prisma": "^6.10.1"
     }
 }
