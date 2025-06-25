@@ -1,79 +1,65 @@
 const express = require('express');
+const fs = require('fs');
+const path = require('path');
 const router = express.Router();
-const db = require('../db');
+
+const examesFilePath = path.join(__dirname, '../exame.json');
+
+// Função para ler o arquivo JSON
+const readExames = () => {
+  const data = fs.readFileSync(examesFilePath, 'utf-8');
+  return JSON.parse(data || '[]'); // Retorna um array vazio se o arquivo estiver vazio
+};
+
+// Função para salvar no arquivo JSON
+const writeExames = (exames) => {
+  fs.writeFileSync(examesFilePath, JSON.stringify(exames, null, 2), 'utf-8');
+};
 
 // Listar todos os exames
 router.get('/', (req, res) => {
-  const { paciente } = req.query;
-  let sql = `
-    SELECT 
-      e.idExame, e.laboratorio, e.exameTexto, e.dataExame, e.resultado, e.informacoesAdicionais,
-      p.idPaciente, p.nome, p.dataNascimento, p.telefone, p.email, p.nomeMae, p.idade, p.medicamento, p.patologia
-    FROM exames e
-    JOIN pacientes p ON e.idPaciente = p.idPaciente
-  `;
-  let params = [];
-  if (paciente) {
-    sql += ' WHERE e.idPaciente = ?';
-    params.push(paciente);
-  }
-  db.query(sql, params, (err, results) => {
-    if (err) return res.status(500).json({ error: err.message });
-    res.json(results);
-  });
+  const exames = readExames();
+  res.json(exames);
 });
 
 // Buscar exame por ID
 router.get('/:id', (req, res) => {
   const id = parseInt(req.params.id);
-  db.query('SELECT * FROM exames WHERE id = ?', [id], (err, results) => {
-    if (err) return res.status(500).json({ error: err.message });
-    if (results.length === 0) return res.status(404).json({ message: 'Exame não encontrado' });
-    res.json(results[0]);
-  });
+  const exames = readExames();
+  const exame = exames.find((e, index) => index === id);
+  if (!exame) return res.status(404).json({ message: 'Exame não encontrado' });
+  res.json(exame);
 });
 
 // Inserir novo exame
 router.post('/', (req, res) => {
-  const { idExame, idPaciente, laboratorio, exameTexto, dataExame, resultado } = req.body;
-  db.query('SELECT * FROM pacientes WHERE idPaciente = ?', [idPaciente], (err, results) => {
-    if (err) return res.status(500).json({ error: err.message });
-    if (results.length === 0) return res.status(404).json({ message: 'Paciente não encontrado' });
-
-    db.query(
-      'INSERT INTO exames (idExame, idPaciente, laboratorio, exameTexto, dataExame, resultado) VALUES (?, ?, ?, ?, ?, ?)',
-      [idExame, idPaciente, laboratorio, exameTexto, dataExame, resultado],
-      (err, result) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.status(201).json({ id: result.insertId, idExame, idPaciente, laboratorio, exameTexto, dataExame, resultado });
-      }
-    );
-  });
+  const { idPaciente, laboratorio, exameTexto, dataExame, resultado, informacoesAdicionais } = req.body;
+  const exames = readExames();
+  const novoExame = { idPaciente, laboratorio, exameTexto, dataExame, resultado, informacoesAdicionais };
+  exames.push(novoExame);
+  writeExames(exames);
+  res.status(201).json(novoExame);
 });
 
 // Editar exame
 router.put('/:id', (req, res) => {
   const id = parseInt(req.params.id);
-  const { idExame, paciente, laboratorio, exameTexto, dataExame, resultado } = req.body;
-  db.query(
-    'UPDATE exames SET idExame=?, paciente=?, laboratorio=?, exameTexto=?, dataExame=?, resultado=? WHERE id=?',
-    [idExame, paciente, laboratorio, exameTexto, dataExame, resultado, id],
-    (err, result) => {
-      if (err) return res.status(500).json({ error: err.message });
-      if (result.affectedRows === 0) return res.status(404).json({ message: 'Exame não encontrado' });
-      res.json({ id, idExame, paciente, laboratorio, exameTexto, dataExame, resultado });
-    }
-  );
+  const { idPaciente, laboratorio, exameTexto, dataExame, resultado, informacoesAdicionais } = req.body;
+  const exames = readExames();
+  if (id < 0 || id >= exames.length) return res.status(404).json({ message: 'Exame não encontrado' });
+  exames[id] = { idPaciente, laboratorio, exameTexto, dataExame, resultado, informacoesAdicionais };
+  writeExames(exames);
+  res.json(exames[id]);
 });
 
 // Excluir exame
 router.delete('/:id', (req, res) => {
   const id = parseInt(req.params.id);
-  db.query('DELETE FROM exames WHERE idExame = ?', [id], (err, result) => {
-    if (err) return res.status(500).json({ error: err.message });
-    if (result.affectedRows === 0) return res.status(404).json({ message: 'Exame não encontrado' });
-    res.status(204).send();
-  });
+  const exames = readExames();
+  if (id < 0 || id >= exames.length) return res.status(404).json({ message: 'Exame não encontrado' });
+  exames.splice(id, 1);
+  writeExames(exames);
+  res.status(204).send();
 });
 
 module.exports = router;

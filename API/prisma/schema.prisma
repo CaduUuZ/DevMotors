@@ -1,0 +1,43 @@
+datasource db {
+  provider = "mysql"
+  url      = "mysql://root@localhost:3307/lab_faculdade"
+}
+
+model exames {
+  idExame               Int        @id @default(autoincrement())
+  idPaciente            Int?
+  laboratorio           String     @db.VarChar(100)
+  exameTexto            String     @db.Text
+  dataExame             DateTime   @default(now()) @db.Timestamp(0)
+  resultado             String?    @db.Text
+  informacoesAdicionais String?    @db.Text
+  pacientes             pacientes? @relation(fields: [idPaciente], references: [idPaciente], onDelete: Cascade, onUpdate: Restrict, map: "exames_ibfk_1")
+
+  @@index([idPaciente], map: "idPaciente")
+}
+
+model pacientes {
+  idPaciente     Int      @id @default(autoincrement())
+  dataCadastro   DateTime @default(now()) @db.Timestamp(0)
+  nome           String   @db.VarChar(100)
+  dataNascimento DateTime @db.Date
+  idade          Int
+  telefone       String?  @db.VarChar(20)
+  email          String?  @db.VarChar(100)
+  nomeMae        String?  @db.VarChar(100)
+  Medicamento    String?  @db.VarChar(100)
+  Patologia      String?  @db.VarChar(100)
+  exames         exames[]
+}
+
+model usuarios {
+  id    Int            @id @default(autoincrement())
+  email String         @unique(map: "email") @db.VarChar(100)
+  senha String         @db.VarChar(100)
+  nivel usuarios_nivel @default(user)
+}
+
+enum usuarios_nivel {
+  user
+  admin
+}
