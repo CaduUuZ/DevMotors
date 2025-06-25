@@ -46,7 +46,7 @@ if (!is_array($exames)) {
   <div class="search-container">
     <form method="GET" class="search-form">
       <label for="buscaId">Buscar por ID do Paciente:</label>
-      <input type="text" name="buscaId" id="buscaId" placeholder="Ex: PAC123" value="<?= htmlspecialchars($buscaId) ?>">
+      <input type="text" name="buscaId" id="buscaId" placeholder="Ex: 1234" value="<?= htmlspecialchars($buscaId) ?>">
       <button type="submit" class="btn-primary">Buscar</button>
     </form>
   </div>
